@@ -10,7 +10,7 @@ from nose.tools import *
 from py_stringmatching.simfunctions import levenshtein, jaro, jaro_winkler, hamming_distance, needleman_wunsch, \
     smith_waterman, affine
 # token based similarity measures
-from py_stringmatching.simfunctions import overlap_coefficient, jaccard, cosine, tfidf, soft_tfidf
+from py_stringmatching.simfunctions import overlap_coefficient, jaccard, cosine, tfidf, soft_tfidf, tversky_index
 # hybrid similarity measures
 from py_stringmatching.simfunctions import monge_elkan
 
@@ -345,6 +345,63 @@ class TfidfTestCases(unittest.TestCase):
     @raises(TypeError)
     def test_invalid_input3(self):
         tfidf(None, None)
+
+
+class TverskyIndexTestCases(unittest.TestCase):
+    def test_valid_input(self):
+        self.assertEqual(tversky_index(['data', 'science'], ['data'], 0.5, 0.5), 1.0 / (1.0 + 0.5*1 + 0.5*0))
+        self.assertEqual(tversky_index(['data', 'science'], ['science', 'good']), 1.0 / (1.0 + 0.5*1 + 0.5*1))
+        self.assertEqual(tversky_index([], ['data']), 0)
+        self.assertEqual(tversky_index(['data', 'data', 'science'], ['data', 'management'], 0.7, 0.8),
+                         1.0 / (1.0 + 0.7*1 + 0.8*1))
+        self.assertEqual(tversky_index(['data', 'management', 'science'], ['data', 'data', 'science'], 0.2, 0.4),
+                         2.0 / (2.0 + 0.2*1 + 0))
+        self.assertEqual(tversky_index([], []), 1.0)
+        self.assertEqual(tversky_index(['a', 'b'], ['b', 'a'], 0.9, 0.8), 1.0)
+        self.assertEqual(tversky_index(['a', 'b'], ['b', 'a']), 1.0)
+        self.assertEqual(tversky_index(set([]), set([])), 1.0)
+        self.assertEqual(tversky_index({1, 1, 2, 3, 4}, {2, 3, 4, 5, 6, 7, 7, 8}, 0.45, 0.85),
+                         3.0 / (3.0 + 0.45*1 + 0.85*4))
+
+    @raises(TypeError)
+    def test_invalid_input1(self):
+        tversky_index(1, 1)
+
+    @raises(TypeError)
+    def test_invalid_input2(self):
+        tversky_index(['a'], None)
+
+    @raises(TypeError)
+    def test_invalid_input3(self):
+        tversky_index(None, ['b'])
+
+    @raises(TypeError)
+    def test_invalid_input4(self):
+        tversky_index(None, None)
+
+    @raises(TypeError)
+    def test_invalid_input5(self):
+        tversky_index(None, 'MARHTA')
+
+    @raises(TypeError)
+    def test_invalid_input6(self):
+        tversky_index('MARHTA', None)
+
+    @raises(TypeError)
+    def test_invalid_input7(self):
+        tversky_index('MARHTA', 'MARTHA')
+
+    @raises(ValueError)
+    def test_invalid_input8(self):
+        tversky_index(['MARHTA'], ['MARTHA'], 0.5, -0.9)
+
+    @raises(ValueError)
+    def test_invalid_input9(self):
+        tversky_index(['MARHTA'], ['MARTHA'], -0.5, 0.9)
+
+    @raises(ValueError)
+    def test_invalid_input10(self):
+        tversky_index(['MARHTA'], ['MARTHA'], -0.5, -0.9)
 
 
 # ---------------------- bag based similarity measures  ----------------------

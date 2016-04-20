@@ -569,6 +569,59 @@ def overlap_coefficient(set1, set2):
     return float(len(set1 & set2)) / min(len(set1), len(set2))
 
 
+def tversky_index(set1, set2, alpha=0.5, beta=0.5):
+    """
+    Computes the Tversky index similarity between two sets.
+
+    The Tversky index is an asymmetric similarity measure on sets that compares a variant to a prototype. The
+    Tversky index can be seen as a generalization of Dice's coefficient and Tanimoto coefficient.
+
+
+    For sets X and Y the Tversky index is a number between 0 and 1 given by:
+
+    :math:`tversky_index(X, Y) = \\frac{|X \\cap Y|}{|X \\cap Y| + \alpha |X-Y| + \beta |Y-X|}`
+    where, :math: \alpha, \beta >=0
+
+    Args:
+        set1,set2 (set or list): Input sets (or lists). Input lists are converted to sets.
+
+    Returns:
+        Tversly index similarity (float)
+
+    Raises:
+        TypeError : If the inputs are not sets (or lists) or if one of the inputs is None.
+
+    Examples:
+        >>> tversky_index(['data', 'science'], ['data'])
+        0.6666666666666666
+        >>> tversky_index({1, 1, 2, 3, 4}, {2, 3, 4, 5, 6, 7, 7, 8})
+        0.5454545454545454
+        >>> tversky_index({1, 1, 2, 3, 4}, {2, 3, 4, 5, 6, 7, 7, 8}, 0.5, 0.5)
+        0.5454545454545454
+        >>> tversky_index(['data', 'management'], ['data', 'data', 'science'])
+        0.5
+        >>> tversky_index(['data', 'management'], ['data', 'data', 'science'], beta=0.5)
+        0.5
+    """
+    # input validations
+    utils.sim_check_for_none(set1, set2)
+    utils.sim_check_for_list_or_set_inputs(set1, set2)
+    utils.sim_check_tversky_parameters(alpha, beta)
+    # if exact match return 1.0
+    if utils.sim_check_for_exact_match(set1, set2):
+        return 1.0
+    # if one of the strings is empty return 0
+    if utils.sim_check_for_empty(set1, set2):
+        return 0
+    if not isinstance(set1, set):
+        set1 = set(set1)
+    if not isinstance(set2, set):
+        set2 = set(set2)
+    intersection = float(len(set1 & set2))
+    return 1.0 * intersection / (intersection + (alpha * len(set1 - set2))
+                                            + (beta * len(set2 - set1)))
+
+
 # ---------------------- bag based similarity measures  ----------------------
 # noinspection PyArgumentList,PyArgumentList
 def tfidf(bag1, bag2, corpus_list=None, dampen=False):

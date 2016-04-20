@@ -14,6 +14,7 @@ Similarity Functions
 .. autofunction:: jaccard(set1, set2)
 .. autofunction:: overlap_coefficient(set1, set2)
 .. autofunction:: cosine(set1, set2)
+.. autofunction:: tversky_index(set1, set2)
 .. autofunction:: monge_elkan(bag1, bag2, sim_func=levenshtein)
 .. autofunction:: tfidf(bag1, bag2, corpus_list = None, dampen=False)
 .. autofunction:: soft_tfidf(bag1, bag2, corpus_list=None, sim_func=jaro, threshold=0.5)
