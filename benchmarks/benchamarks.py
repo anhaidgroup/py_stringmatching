@@ -168,6 +168,26 @@ class TimeSmithWaterman:
         simfunctions.smith_waterman(_medium_string_1, _long_string_1)
 
 
+class TimeSoundex:
+    def time_short_short(self):
+        simfunctions.soundex(_short_string_1, _short_string_2)
+
+    def time_medium_medium(self):
+        simfunctions.soundex(_medium_string_1, _medium_string_2)
+
+    def time_long_long(self):
+        simfunctions.soundex(_long_string_1, _long_string_2)
+
+    def time_short_medium(self):
+        simfunctions.soundex(_short_string_1, _medium_string_1)
+
+    def time_short_long(self):
+        simfunctions.soundex(_short_string_1, _long_string_1)
+
+    def time_medium_long(self):
+        simfunctions.soundex(_medium_string_1, _long_string_1)
+
+
 class TimeCosine:
     def time_small_small_wo_rep(self):
         simfunctions.cosine(_small_num_tokens_wo_rep, _small_num_tokens_wo_rep)

@@ -10,6 +10,7 @@ Similarity Functions
 .. autofunction:: jaro_winkler(string1, string2, prefix_weight=0.1)
 .. autofunction:: needleman_wunsch(string1, string2, gap_cost=1, sim_score=sim_ident)
 .. autofunction:: smith_waterman(string1, string2, gap_cost=1, sim_score=sim_ident)
+.. autofunction:: soundex(string1, string2)
 .. autofunction:: affine(string1, string2, gap_start=1, gap_continuation=0.5, sim_score=sim_ident)
 .. autofunction:: jaccard(set1, set2)
 .. autofunction:: overlap_coefficient(set1, set2)

@@ -8,7 +8,7 @@ from nose.tools import *
 
 # sequence based similarity measures
 from py_stringmatching.simfunctions import levenshtein, jaro, jaro_winkler, hamming_distance, needleman_wunsch, \
-    smith_waterman, affine
+    smith_waterman, affine, soundex
 # token based similarity measures
 from py_stringmatching.simfunctions import overlap_coefficient, jaccard, cosine, tfidf, soft_tfidf
 # hybrid similarity measures
@@ -232,6 +232,41 @@ class SmithWatermanTestCases(unittest.TestCase):
     @raises(TypeError)
     def test_invalid_input3(self):
         smith_waterman(None, None)
+
+
+class SoundexTestCases(unittest.TestCase):
+    def test_valid_input(self):
+        self.assertEqual(soundex('Robert', 'Rupert'), 1)
+        self.assertEqual(soundex('Sue', 'S'), 1)
+        self.assertEqual(soundex('robert', 'rupert'), 1)
+        self.assertEqual(soundex('Gough', 'goff'), 0)
+        self.assertEqual(soundex('gough', 'Goff'), 0)
+        self.assertEqual(soundex('ali', 'a,,,li'), 1)
+        self.assertEqual(soundex('Jawornicki', 'Yavornitzky'), 0)
+
+    @raises(TypeError)
+    def test_invalid_input1(self):
+        soundex('a', None)
+
+    @raises(TypeError)
+    def test_invalid_input2(self):
+        soundex(None, 'b')
+
+    @raises(TypeError)
+    def test_invalid_input3(self):
+        soundex(None, None)
+
+    @raises(ValueError)
+    def test_invalid_input4(self):
+        soundex('a', '')
+
+    @raises(ValueError)
+    def test_invalid_input5(self):
+        soundex('', 'This is a long string')
+
+    @raises(TypeError)
+    def test_invalid_input7(self):
+        soundex('ali', [''])
 
 
 # ---------------------- token based similarity measures  ----------------------
