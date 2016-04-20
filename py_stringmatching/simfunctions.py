@@ -471,6 +471,55 @@ def cosine(set1, set2):
     return float(len(set1 & set2)) / (math.sqrt(float(len(set1))) * math.sqrt(float(len(set2))))
 
 
+def dice(set1, set2):
+    """
+    Computes the Dice similarity coefficient between two sets.
+
+    The similarity is defined as twice the shared information (intersection) divided by sum of cardinalities.
+
+
+    For two sets X and Y, the Dice similarity coefficient is:
+
+    :math:`dice(X, Y) = \\frac{2 * |X \\cap Y|}{|X| + |Y|}`
+
+
+    Args:
+        set1,set2 (set or list): Input sets (or lists). Input lists are converted to sets.
+
+    Returns:
+        Dice similarity coefficient (float)
+
+    Raises:
+        TypeError : If the inputs are not sets (or lists) or if one of the inputs is None.
+
+    Examples:
+        >>> dice(['data', 'science'], ['data'])
+        0.6666666666666666
+        >>> dice({1, 1, 2, 3, 4}, {2, 3, 4, 5, 6, 7, 7, 8})
+        0.5454545454545454
+        >>> dice(['data', 'management'], ['data', 'data', 'science'])
+        0.5
+
+    References:
+        * Wikipedia article : https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Dice%27s_coefficient
+        * Simmetrics library
+    """
+    # input validations
+    utils.sim_check_for_none(set1, set2)
+    utils.sim_check_for_list_or_set_inputs(set1, set2)
+    # if exact match return 1.0
+    if utils.sim_check_for_exact_match(set1, set2):
+        return 1.0
+    # if one of the strings is empty return 0
+    if utils.sim_check_for_empty(set1, set2):
+        return 0
+    if not isinstance(set1, set):
+        set1 = set(set1)
+    if not isinstance(set2, set):
+        set2 = set(set2)
+    return 2.0 * float(len(set1 & set2)) / float(len(set1) + len(set2))
+
+
 def jaccard(set1, set2):
     """
     Computes the Jaccard measure between two sets.

@@ -11,6 +11,7 @@ Similarity Functions
 .. autofunction:: needleman_wunsch(string1, string2, gap_cost=1, sim_score=sim_ident)
 .. autofunction:: smith_waterman(string1, string2, gap_cost=1, sim_score=sim_ident)
 .. autofunction:: affine(string1, string2, gap_start=1, gap_continuation=0.5, sim_score=sim_ident)
+.. autofunction:: dice(set1, set2)
 .. autofunction:: jaccard(set1, set2)
 .. autofunction:: overlap_coefficient(set1, set2)
 .. autofunction:: cosine(set1, set2)

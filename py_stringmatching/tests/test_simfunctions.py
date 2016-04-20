@@ -10,7 +10,7 @@ from nose.tools import *
 from py_stringmatching.simfunctions import levenshtein, jaro, jaro_winkler, hamming_distance, needleman_wunsch, \
     smith_waterman, affine
 # token based similarity measures
-from py_stringmatching.simfunctions import overlap_coefficient, jaccard, cosine, tfidf, soft_tfidf
+from py_stringmatching.simfunctions import overlap_coefficient, jaccard, cosine, tfidf, soft_tfidf, dice
 # hybrid similarity measures
 from py_stringmatching.simfunctions import monge_elkan
 
@@ -336,6 +336,47 @@ class OverlapCoefficientTestCases(unittest.TestCase):
     @raises(TypeError)
     def test_invalid_input6(self):
         overlap_coefficient('MARTHA', 'MARTHA')
+
+
+class DiceTestCases(unittest.TestCase):
+    def test_valid_input(self):
+        self.assertEqual(dice(['data', 'science'], ['data']), 2 * 1.0 / 3.0)
+        self.assertEqual(dice(['data', 'science'], ['science', 'good']), 2 * 1.0 / 4.0)
+        self.assertEqual(dice([], ['data']), 0)
+        self.assertEqual(dice(['data', 'data', 'science'], ['data', 'management']), 2 * 1.0 / 4.0)
+        self.assertEqual(dice(['data', 'management'], ['data', 'data', 'science']), 2 * 1.0 / 4.0)
+        self.assertEqual(dice([], []), 1.0)
+        self.assertEqual(dice(['a', 'b'], ['b', 'a']), 1.0)
+        self.assertEqual(dice(set([]), set([])), 1.0)
+        self.assertEqual(dice({1, 1, 2, 3, 4}, {2, 3, 4, 5, 6, 7, 7, 8}), 2 * 3.0 / 11.0)
+
+    @raises(TypeError)
+    def test_invalid_input1(self):
+        dice(1, 1)
+
+    @raises(TypeError)
+    def test_invalid_input2(self):
+        dice(['a'], None)
+
+    @raises(TypeError)
+    def test_invalid_input3(self):
+        dice(None, ['b'])
+
+    @raises(TypeError)
+    def test_invalid_input4(self):
+        dice(None, None)
+
+    @raises(TypeError)
+    def test_invalid_input5(self):
+        dice(None, 'MARHTA')
+
+    @raises(TypeError)
+    def test_invalid_input6(self):
+        dice('MARHTA', None)
+
+    @raises(TypeError)
+    def test_invalid_input7(self):
+        dice('MARHTA', 'MARTHA')
 
 
 class JaccardTestCases(unittest.TestCase):
