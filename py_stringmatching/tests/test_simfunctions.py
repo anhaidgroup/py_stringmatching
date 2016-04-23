@@ -8,7 +8,7 @@ from nose.tools import *
 
 # sequence based similarity measures
 from py_stringmatching.simfunctions import levenshtein, jaro, jaro_winkler, hamming_distance, needleman_wunsch, \
-    smith_waterman, affine
+    smith_waterman, affine, bag_distance
 # token based similarity measures
 from py_stringmatching.simfunctions import overlap_coefficient, jaccard, cosine, tfidf, soft_tfidf
 # hybrid similarity measures
@@ -52,6 +52,61 @@ class AffineTestCases(unittest.TestCase):
     @raises(TypeError)
     def test_invalid_input6(self):
         affine(12.90, 12.90)
+
+
+class BagDistanceTestCases(unittest.TestCase):
+    def test_valid_input(self):
+        self.assertEqual(bag_distance('a', ''), 1)
+        self.assertEqual(bag_distance('', 'a'), 1)
+        self.assertEqual(bag_distance('abc', ''), 3)
+        self.assertEqual(bag_distance('', 'abc'), 3)
+        self.assertEqual(bag_distance('', ''), 0)
+        self.assertEqual(bag_distance('a', 'a'), 0)
+        self.assertEqual(bag_distance('abc', 'abc'), 0)
+        self.assertEqual(bag_distance('', 'a'), 1)
+        self.assertEqual(bag_distance('a', 'ab'), 1)
+        self.assertEqual(bag_distance('b', 'ab'), 1)
+        self.assertEqual(bag_distance('ac', 'abc'), 1)
+        self.assertEqual(bag_distance('abcdefg', 'xabxcdxxefxgx'), 6)
+        self.assertEqual(bag_distance('a', ''), 1)
+        self.assertEqual(bag_distance('ab', 'a'), 1)
+        self.assertEqual(bag_distance('ab', 'b'), 1)
+        self.assertEqual(bag_distance('abc', 'ac'), 1)
+        self.assertEqual(bag_distance('xabxcdxxefxgx', 'abcdefg'), 6)
+        self.assertEqual(bag_distance('a', 'b'), 1)
+        self.assertEqual(bag_distance('ab', 'ac'), 1)
+        self.assertEqual(bag_distance('ac', 'bc'), 1)
+        self.assertEqual(bag_distance('abc', 'axc'), 1)
+        self.assertEqual(bag_distance('xabxcdxxefxgx', '1ab2cd34ef5g6'), 6)
+        self.assertEqual(bag_distance('example', 'samples'), 2)
+        self.assertEqual(bag_distance('sturgeon', 'urgently'), 2)
+        self.assertEqual(bag_distance('bag_distance', 'frankenstein'), 6)
+        self.assertEqual(bag_distance('distance', 'difference'), 5)
+        self.assertEqual(bag_distance('java was neat', 'scala is great'), 6)
+
+    @raises(TypeError)
+    def test_invalid_input1(self):
+        bag_distance('a', None)
+
+    @raises(TypeError)
+    def test_invalid_input2(self):
+        bag_distance(None, 'b')
+
+    @raises(TypeError)
+    def test_invalid_input3(self):
+        bag_distance(None, None)
+
+    @raises(TypeError)
+    def test_invalid_input4(self):
+        bag_distance('MARHTA', 12.90)
+
+    @raises(TypeError)
+    def test_invalid_input5(self):
+        bag_distance(12.90, 'MARTHA')
+
+    @raises(TypeError)
+    def test_invalid_input6(self):
+        bag_distance(12.90, 12.90)
 
 
 class JaroTestCases(unittest.TestCase):

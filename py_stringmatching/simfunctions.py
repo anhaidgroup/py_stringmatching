@@ -86,6 +86,63 @@ def affine(string1, string2, gap_start=1, gap_continuation=0.5, sim_score=sim_id
     return max(m[len(string1)][len(string2)], x[len(string1)][len(string2)], y[len(string1)][len(string2)])
 
 
+def bag_distance(string1, string2):
+    """
+    Computes the bag distance between two strings.
+
+    For two strings X and Y, the Bag distance is:
+
+    :math:`max( |multiset(string1)-multiset(string2)|, |multiset(string2)-multiset(string1)| )`
+
+    Args:
+        string1,string2 (str): Input strings
+
+    Returns:
+        Bag distance (int)
+
+    Raises:
+        TypeError : If the inputs are not strings
+
+    Examples:
+        >>> bag_distance('cat', 'hat')
+        1
+        >>> bag_distance('Niall', 'Neil')
+        2
+        >>> bag_distance('aluminum', 'Catalan')
+        5
+        >>> bag_distance('ATCG', 'TAGC')
+        0
+        >>> bag_distance('abcde', 'xyz')
+        5
+
+    References:
+        * http://www.icmlc.org/icmlc2011/018_icmlc2011.pdf
+
+    """
+    # input validations
+    utils.sim_check_for_none(string1, string2)
+    utils.sim_check_for_string_inputs(string1, string2)
+    if utils.sim_check_for_exact_match(string1, string2):
+        return 0
+
+    len_str1 = len(string1)
+    len_str2 = len(string2)
+
+    if len_str1 == 0:
+        return len_str2
+
+    if len_str2 == 0:
+        return len_str1
+
+    bag1 = collections.Counter(string1)
+    bag2 = collections.Counter(string2)
+
+    size1 = sum((bag1-bag2).values())
+    size2 = sum((bag2-bag1).values())
+    # returning the max of difference of sets
+    return max(size1, size2)
+
+
 # jaro
 # noinspection PyUnboundLocalVariable,PyUnboundLocalVariable,PyUnboundLocalVariable,PyUnboundLocalVariable
 def jaro(string1, string2):

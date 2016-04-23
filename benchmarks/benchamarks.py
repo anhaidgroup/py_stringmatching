@@ -128,6 +128,26 @@ class TimeLevenshtein:
         simfunctions.levenshtein(_medium_string_1, _long_string_1)
 
 
+class TimeBagDistance:
+    def time_short_short(self):
+        simfunctions.bag_distance(_short_string_1, _short_string_2)
+
+    def time_medium_medium(self):
+        simfunctions.bag_distance(_medium_string_1, _medium_string_2)
+
+    def time_long_long(self):
+        simfunctions.bag_distance(_long_string_1, _long_string_2)
+
+    def time_short_medium(self):
+        simfunctions.bag_distance(_short_string_1, _medium_string_1)
+
+    def time_short_long(self):
+        simfunctions.bag_distance(_short_string_1, _long_string_1)
+
+    def time_medium_long(self):
+        simfunctions.bag_distance(_medium_string_1, _long_string_1)
+
+
 class TimeNeedlemanWunsch:
     def time_short_short(self):
         simfunctions.needleman_wunsch(_short_string_1, _short_string_2)
