@@ -31,6 +31,8 @@ from py_stringmatching.similarity_measure.generalized_jaccard import Generalized
 from py_stringmatching.similarity_measure.monge_elkan import MongeElkan
 #phonetic similarity measures
 from py_stringmatching.similarity_measure.soundex import Soundex
+#fuzzywuzzy similarity measures
+from py_stringmatching.similarity_measure.ratio import Ratio
 
 
 # ---------------------- sequence based similarity measures  ----------------------
@@ -2009,3 +2011,121 @@ class MongeElkanTestCases(unittest.TestCase):
     @raises(TypeError)
     def test_invalid_input7_raw_score(self):
         self.me.get_raw_score('temp', ['temp'])
+
+# ---------------------- fuzzywuzzy similarity measure  ----------------------
+
+class RatioTestCases(unittest.TestCase):
+    def setUp(self):
+        self.ratio = Ratio()
+
+    def test_valid_input_raw_score(self):
+        self.assertEqual(self.ratio.get_raw_score('a', ''), 0)
+        self.assertEqual(self.ratio.get_raw_score('', 'a'), 0)
+        self.assertEqual(self.ratio.get_raw_score('abc', ''), 0)
+        self.assertEqual(self.ratio.get_raw_score('', 'abc'), 0)
+        self.assertEqual(self.ratio.get_raw_score('', ''), 0)
+        self.assertEqual(self.ratio.get_raw_score('a', 'a'), 100)
+        self.assertEqual(self.ratio.get_raw_score('abc', 'abc'), 100)
+        self.assertEqual(self.ratio.get_raw_score('a', 'ab'), 67)
+        self.assertEqual(self.ratio.get_raw_score('b', 'ab'), 67)
+        self.assertEqual(self.ratio.get_raw_score(' ac', 'abc'), 67)
+        self.assertEqual(self.ratio.get_raw_score('abcdefg', 'xabxcdxxefxgx'), 70)
+        self.assertEqual(self.ratio.get_raw_score('ab', 'a'), 67)
+        self.assertEqual(self.ratio.get_raw_score('ab', 'A'), 0)
+        self.assertEqual(self.ratio.get_raw_score('Ab', 'a'), 0)
+        self.assertEqual(self.ratio.get_raw_score('Ab', 'A'), 67)
+        self.assertEqual(self.ratio.get_raw_score('Ab', 'b'), 67)
+        self.assertEqual(self.ratio.get_raw_score('ab', 'b'), 67)
+        self.assertEqual(self.ratio.get_raw_score('abc', 'ac'), 80)
+        self.assertEqual(self.ratio.get_raw_score('xabxcdxxefxgx', 'abcdefg'), 70)
+        self.assertEqual(self.ratio.get_raw_score('a', 'b'), 0)
+        self.assertEqual(self.ratio.get_raw_score('ab', 'ac'), 50)
+        self.assertEqual(self.ratio.get_raw_score('ac', 'bc'), 50)
+        self.assertEqual(self.ratio.get_raw_score('abc', 'axc'), 67)
+        self.assertEqual(self.ratio.get_raw_score('xabxcdxxefxgx', '1ab2cd34ef5g6'), 54)
+        self.assertEqual(self.ratio.get_raw_score('example', 'samples'), 71)
+        self.assertEqual(self.ratio.get_raw_score('bag_distance', 'frankenstein'), 33)
+        self.assertEqual(self.ratio.get_raw_score('distance', 'difference'), 56)
+        self.assertEqual(self.ratio.get_raw_score('java was neat', 'scala is great'), 59)
+        self.assertEqual(self.ratio.get_raw_score('java wAs nEat', 'scala is great'), 52)
+        self.assertEqual(self.ratio.get_raw_score('scaLA is greAT', 'java wAs nEat'), 30)
+
+    def test_valid_input_sim_score(self):
+        self.assertAlmostEqual(self.ratio.get_sim_score('a', ''), 0.0)
+        self.assertAlmostEqual(self.ratio.get_sim_score('', 'a'), 0.0)
+        self.assertAlmostEqual(self.ratio.get_sim_score('abc', ''), 0.0)
+        self.assertAlmostEqual(self.ratio.get_sim_score('', 'abc'), 0.0)
+        self.assertAlmostEqual(self.ratio.get_sim_score('', ''), 0.0)
+        self.assertAlmostEqual(self.ratio.get_sim_score('a', 'a'), 1.0)
+        self.assertAlmostEqual(self.ratio.get_sim_score('abc', 'abc'), 1.0)
+        self.assertAlmostEqual(self.ratio.get_sim_score('a', 'ab'), 0.67)
+        self.assertAlmostEqual(self.ratio.get_sim_score('b', 'ab'), 0.67)
+        self.assertAlmostEqual(self.ratio.get_sim_score(' ac', 'abc'), 0.67)
+        self.assertAlmostEqual(self.ratio.get_sim_score('abcdefg', 'xabxcdxxefxgx'), 0.70)
+        self.assertAlmostEqual(self.ratio.get_sim_score('ab', 'a'), 0.67)
+        self.assertAlmostEqual(self.ratio.get_sim_score('ab', 'A'), 0.0)
+        self.assertAlmostEqual(self.ratio.get_sim_score('Ab', 'a'), 0.0)
+        self.assertAlmostEqual(self.ratio.get_sim_score('Ab', 'A'), 0.67)
+        self.assertAlmostEqual(self.ratio.get_sim_score('Ab', 'b'), 0.67)
+        self.assertAlmostEqual(self.ratio.get_sim_score('ab', 'b'), 0.67)
+        self.assertAlmostEqual(self.ratio.get_sim_score('abc', 'ac'), 0.80)
+        self.assertAlmostEqual(self.ratio.get_sim_score('xabxcdxxefxgx', 'abcdefg'), 0.70)
+        self.assertAlmostEqual(self.ratio.get_sim_score('a', 'b'), 0.0)
+        self.assertAlmostEqual(self.ratio.get_sim_score('ab', 'ac'), 0.50)
+        self.assertAlmostEqual(self.ratio.get_sim_score('ac', 'bc'), 0.50)
+        self.assertAlmostEqual(self.ratio.get_sim_score('abc', 'axc'), 0.67)
+        self.assertAlmostEqual(self.ratio.get_sim_score('xabxcdxxefxgx', '1ab2cd34ef5g6'), 0.54)
+        self.assertAlmostEqual(self.ratio.get_sim_score('example', 'samples'), 0.71)
+        self.assertAlmostEqual(self.ratio.get_sim_score('bag_distance', 'frankenstein'), 0.33)
+        self.assertAlmostEqual(self.ratio.get_sim_score('distance', 'difference'), 0.56)
+        self.assertAlmostEqual(self.ratio.get_sim_score('java was neat', 'scala is great'), 0.59)
+        self.assertAlmostEqual(self.ratio.get_sim_score('java wAs nEat', 'scala is great'), 0.52)
+        self.assertAlmostEqual(self.ratio.get_sim_score('scaLA is greAT', 'java wAs nEat'), 0.30)
+
+    @raises(TypeError)
+    def test_invalid_input1_raw_score(self):
+        self.ratio.get_raw_score('a', None)
+
+    @raises(TypeError)
+    def test_invalid_input2_raw_score(self):
+        self.ratio.get_raw_score(None, 'b')
+
+    @raises(TypeError)
+    def test_invalid_input3_raw_score(self):
+        self.ratio.get_raw_score(None, None)
+
+    @raises(TypeError)
+    def test_invalid_input4_raw_score(self):
+        self.ratio.get_raw_score('MARHTA', 12.90)
+
+    @raises(TypeError)
+    def test_invalid_input5_raw_score(self):
+        self.ratio.get_raw_score(12.90, 'MARTHA')
+
+    @raises(TypeError)
+    def test_invalid_input6_raw_score(self):
+        self.ratio.get_raw_score(12.90, 12.90)
+
+    @raises(TypeError)
+    def test_invalid_input1_sim_score(self):
+        self.ratio.get_sim_score('a', None)
+
+    @raises(TypeError)
+    def test_invalid_input2_sim_score(self):
+        self.ratio.get_sim_score(None, 'b')
+
+    @raises(TypeError)
+    def test_invalid_input3_sim_score(self):
+        self.ratio.get_sim_score(None, None)
+
+    @raises(TypeError)
+    def test_invalid_input4_sim_score(self):
+        self.ratio.get_sim_score('MARHTA', 12.90)
+
+    @raises(TypeError)
+    def test_invalid_input5_sim_score(self):
+        self.ratio.get_sim_score(12.90, 'MARTHA')
+
+    @raises(TypeError)
+    def test_invalid_input6_sim_score(self):
+        self.ratio.get_sim_score(12.90, 12.90)
