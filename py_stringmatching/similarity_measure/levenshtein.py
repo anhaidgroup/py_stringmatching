@@ -1,7 +1,7 @@
 from __future__ import division
 
 from py_stringmatching import utils
-from py_stringmatching.similarity_measure.cython_levenshtein import levenshtein
+from py_stringmatching.cython_implementations.cython_levenshtein import levenshtein
 from py_stringmatching.similarity_measure.sequence_similarity_measure import \
                                                     SequenceSimilarityMeasure
 
