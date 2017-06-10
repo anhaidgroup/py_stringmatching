@@ -71,8 +71,8 @@ if __name__ == "__main__":
     extensions = [setuptools.Extension("py_stringmatching.cython_implementations.cython_levenshtein",
                                        ["py_stringmatching/cython_implementations/cython_levenshtein.c"],
                                        include_dirs=[]),
-                  setuptools.Extension("py_stringmatching.cython_implementations.cython_levenshtein",
-                                       ["py_stringmatching/cython_implementations/cython_levenshtein.c"],
+                  setuptools.Extension("py_stringmatching.cython_implementations.cython_jaro",
+                                       ["py_stringmatching/cython_implementations/cython_jaro.c"],
                                        include_dirs=[])
                   ]
  
