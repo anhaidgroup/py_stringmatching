@@ -73,6 +73,9 @@ if __name__ == "__main__":
                                        include_dirs=[]),
                   setuptools.Extension("py_stringmatching.cython_implementations.cython_jaro",
                                        ["py_stringmatching/cython_implementations/cython_jaro.c"],
+                                       include_dirs=[]),
+                  setuptools.Extension("py_stringmatching.cython_implementations.cython_jaro_winkler",
+                                       ["py_stringmatching/cython_implementations/cython_jaro_winklerq.c"],
                                        include_dirs=[])
                   ]
  
