@@ -45,8 +45,8 @@ measures = {
     # 'BagDistance' : BagDistance,
     # 'Editex' : Editex,
     # 'HammingDistance' : HammingDistance,
-    'Jaro': Jaro,
-    # 'JaroWinkler' : JaroWinkler,
+    # 'Jaro': Jaro,
+    'JaroWinkler' : JaroWinkler,
     # 'Levenshtein' : Levenshtein,
     # 'NeedlemanWunsch' : NeedlemanWunsch,
     # 'SmithWaterman' : SmithWaterman,
@@ -66,8 +66,8 @@ measures = {
 
 }
 
-# bm_size = [10,20,40,80,160]
-bm_size = [10]
+bm_size = [10,20,40,80,160]
+# bm_size = [10]
 new_index = ['short_short', 'short_medium','short_long', 'medium_medium', 'medium_long', 'long_long' ]
 writer = pd.ExcelWriter('benchmark.xlsx')
 if(os.path.isfile('benchmark.xlsx')):
