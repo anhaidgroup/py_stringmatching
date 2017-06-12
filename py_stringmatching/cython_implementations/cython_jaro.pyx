@@ -1,5 +1,5 @@
 # coding=utf-8
-from __future__ import division
+# from __future__ import division
 import cython
 cimport cython
 
@@ -44,7 +44,7 @@ def jaro(unicode string1, unicode string2):
         return 0
 
     cdef int k = 0
-    cdef float trans_count = 0
+    trans_count = 0
 
     for i from 0<= i < len_str1:
         if (flags_s1[i]==1):
@@ -54,10 +54,7 @@ def jaro(unicode string1, unicode string2):
                     break
             if string1[i] != string2[j]:
                 trans_count += 1
-    print(trans_count)
     trans_count /= 2
-    print(trans_count)
-
     cdef float weight = (float(common_chars) / len_str1 + float(common_chars) / len_str2 +
                          (float(common_chars) - trans_count) / float(common_chars)) / 3
     return weight
