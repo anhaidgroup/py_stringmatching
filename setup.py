@@ -68,14 +68,14 @@ if __name__ == "__main__":
         generate_cython()
 
     # specify extensions that need to be compiled
-    extensions = [setuptools.Extension("py_stringmatching.cython.cython_levenshtein",
-                                       ["py_stringmatching/cython/cython_levenshtein.c"],
+    extensions = [setuptools.Extension("py_stringmatching.similarity_measure.cython.cython_levenshtein",
+                                       ["py_stringmatching/similarity_measure/cython/cython_levenshtein.c"],
                                        include_dirs=[]),
-                  setuptools.Extension("py_stringmatching.cython.cython_jaro",
-                                       ["py_stringmatching/cython/cython_jaro.c"],
+                  setuptools.Extension("py_stringmatching.similarity_measure.cython.cython_jaro",
+                                       ["py_stringmatching/similarity_measure/cython/cython_jaro.c"],
                                        include_dirs=[]),
-                  setuptools.Extension("py_stringmatching.cython.cython_jaro_winkler",
-                                       ["py_stringmatching/cython/cython_jaro_winkler.c"],
+                  setuptools.Extension("py_stringmatching.similarity_measure.cython.cython_jaro_winkler",
+                                       ["py_stringmatching/similarity_measure/cython/cython_jaro_winkler.c"],
                                        include_dirs=[])
                   ]
  

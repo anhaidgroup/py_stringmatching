@@ -13,6 +13,7 @@ if PY3:
     unicode = str
     string = str
 
+
 def sim_check_for_none(*args):
     if len(args) > 0 and args[0] is None:
         raise TypeError("First argument cannot be None")
@@ -47,8 +48,8 @@ def sim_check_for_list_or_set_inputs(*args):
 
 
 def sim_check_tversky_parameters(alpha, beta):
-        if alpha < 0 or beta < 0:
-            raise ValueError('Tversky parameters should be greater than or equal to zero')
+    if alpha < 0 or beta < 0:
+        raise ValueError('Tversky parameters should be greater than or equal to zero')
 
 
 def sim_check_for_exact_match(*args):
@@ -74,9 +75,9 @@ def tok_check_for_none(*args):
 
 def convert_bag_to_set(input_list):
     seen_tokens = {}
-    output_set =[]
+    output_set = []
     for token in input_list:
-        if seen_tokens.get(token) == None:
+        if seen_tokens.get(token) is None:
             output_set.append(token)
             seen_tokens[token] = True
     return output_set
@@ -85,8 +86,10 @@ def convert_bag_to_set(input_list):
 def convert_to_unicode(input_string):
     """Convert input string to unicode."""
     if isinstance(input_string, bytes):
-        return input_string.decode('utf-8', 'ignore')
-    return input_string 
+        return input_string.decode('utf-8', 'ignore')  # 'ignore' is added to overcome the UnicodeDecodeError
+        # Issue raised in GitHub to handle or process the data before using
+    return input_string
+
 
 def remove_non_ascii_chars(input_string):
     if type(input_string) is str:
@@ -96,6 +99,7 @@ def remove_non_ascii_chars(input_string):
     else:
         return remove_non_ascii_chars(unicode(input_string))
 
+
 def _remove_non_ascii_chars(input_string):
     remove_chars = str("").join([chr(i) for i in range(128, 256)])
     if PY3:
@@ -103,6 +107,7 @@ def _remove_non_ascii_chars(input_string):
         return input_string.translate(translation_table)
     else:
         return input_string.translate(None, remove_chars)
+
 
 def process_string(input_string, force_ascii=False):
     """Process string by
