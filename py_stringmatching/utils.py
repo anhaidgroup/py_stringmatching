@@ -87,7 +87,7 @@ def convert_to_unicode(input_string):
     """Convert input string to unicode."""
     if isinstance(input_string, bytes):
         return input_string.decode('utf-8', 'ignore')  # 'ignore' is added to overcome the UnicodeDecodeError
-        # Issue raised in GitHub to handle or process the data before using
+        # Issue-#39 raised in GitHub to handle or process the data before using
     return input_string
 
 
