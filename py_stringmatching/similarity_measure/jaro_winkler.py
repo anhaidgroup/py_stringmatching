@@ -1,5 +1,5 @@
 from py_stringmatching import utils
-from py_stringmatching.similarity_measure.jaro import Jaro
+from py_stringmatching.similarity_measure.cython.cython_jaro_winkler import jaro_winkler
 from py_stringmatching.similarity_measure.sequence_similarity_measure import \
                                                     SequenceSimilarityMeasure
 
@@ -56,19 +56,7 @@ class JaroWinkler(SequenceSimilarityMeasure):
         if utils.sim_check_for_empty(string1, string2):
             return 0
 
-        jw_score = Jaro().get_raw_score(string1, string2)
-        min_len = min(len(string1), len(string2))
-
-        # prefix length can be at max 4
-        j = min(min_len, 4)
-        i = 0
-        while i < j and string1[i] == string2[i] and string1[i]:
-            i += 1
-
-        if i:
-            jw_score += i * self.prefix_weight * (1 - jw_score)
-
-        return jw_score
+        return jaro_winkler(string1,string2,self.prefix_weight)
 
     def get_sim_score(self, string1, string2):
         """Computes the normalized Jaro-Winkler similarity score between two strings. Simply call get_raw_score.

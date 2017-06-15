@@ -17,15 +17,33 @@ ctypedef np.int_t DTYPE_t
 
 
 cdef inline int int_min(int a, int b, int c):
-    if (a<=b) and (a<= c):
+    """Finds the minimum integer of the given three integers.
+
+    Args:
+        integer1,integer2,integer3 (int): Input integers.
+
+    Returns:
+        Minimum integer (int).
+
+    """
+    if a<=b and a<= c:
         return a
-    elif (b<=c):
+    elif b<=c:
         return b
     else:
         return c
 
 
 def levenshtein(unicode string1, unicode string2):
+    """Computes the levenshtein distance between two strings.
+
+        Args:
+            string1,string2 (str): Input strings.
+
+        Returns:
+            levenshtein distance (float).
+
+    """
 
     cdef int len_str1 = len(string1)
     cdef int len_str2 = len(string2)
@@ -55,6 +73,7 @@ def levenshtein(unicode string1, unicode string2):
     cdef unsigned char lchar = 0
     cdef unsigned char rchar = 0
 
+    #DP for finding the levenshtein distance
     for i from 0 <= i < (len_str1):
         lchar = string1[i]
         for j from 0 <= j < (len_str2):

@@ -1,6 +1,7 @@
 import subprocess
 import sys
 import os
+import setuptools
 
 # check if pip is installed. If not, raise an ImportError
 PIP_INSTALLED = True
@@ -67,9 +68,16 @@ if __name__ == "__main__":
         generate_cython()
 
     # specify extensions that need to be compiled
-    extensions = [setuptools.Extension("py_stringmatching.similarity_measure.cython_levenshtein",
-                                       ["py_stringmatching/similarity_measure/cython_levenshtein.c"],
-                                       include_dirs=[])]
+    extensions = [setuptools.Extension("py_stringmatching.similarity_measure.cython.cython_levenshtein",
+                                       ["py_stringmatching/similarity_measure/cython/cython_levenshtein.c"],
+                                       include_dirs=[]),
+                  setuptools.Extension("py_stringmatching.similarity_measure.cython.cython_jaro",
+                                       ["py_stringmatching/similarity_measure/cython/cython_jaro.c"],
+                                       include_dirs=[]),
+                  setuptools.Extension("py_stringmatching.similarity_measure.cython.cython_jaro_winkler",
+                                       ["py_stringmatching/similarity_measure/cython/cython_jaro_winkler.c"],
+                                       include_dirs=[])
+                  ]
  
     # find packages to be included. exclude benchmarks.
     packages = setuptools.find_packages(exclude=["benchmarks"])

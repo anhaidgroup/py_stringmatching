@@ -101,7 +101,7 @@ class GeneralizedJaccard(HybridSimilarityMeasure):
                 match_score += element[sim_score_pos]
                 match_count += 1
 
-        return float(match_score) / float(len(set1) + len(set2) - match_count)
+        return round(float(match_score) / float(len(set1) + len(set2) - match_count),5)
 
     def get_sim_score(self, set1, set2):
         """
