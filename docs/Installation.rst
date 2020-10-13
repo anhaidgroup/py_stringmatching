@@ -4,8 +4,12 @@ Installation
  
 Requirements
 ------------
-    * Python 2.7 or Python 3.4+
+    * Python 2.7 or Python 3.5+
     * C or C++ compiler (parts of the package are in Cython for efficiency reasons, and you need C or C++ compiler to compile these parts) 
+
+.. note::
+
+     py_stringmatching 0.4.2 will be the last version to support Python 2 and Python 3.5.
 
 Platforms
 ------------
@@ -13,7 +17,7 @@ py_stringmatching has been tested on Linux (Ubuntu with Kernel Version 3.13.0-40
 
 Dependencies
 ------------
-    * numpy 1.7.0 or higher
+    * numpy 1.7.0 or higher; if using Python 2, numpy less than 1.17; if using Python 3.5, numpy less than 1.19
     * six
 
 .. note::
