@@ -4,9 +4,6 @@ matrix:
     python: 2.7
     env: PYTHON_VERSION=2.7
   - os: linux
-    python: 3.4
-    env: PYTHON_VERSION=3.4
-  - os: linux
     python: 3.5
     env: PYTHON_VERSION=3.5
   - os: linux                                                                   
@@ -19,10 +16,6 @@ matrix:
     language: generic
     env:
     - PYTHON_VERSION=2.7
-  - os: osx
-    language: generic
-    env:
-    - PYTHON_VERSION=3.4
   - os: osx
     language: generic
     env:
