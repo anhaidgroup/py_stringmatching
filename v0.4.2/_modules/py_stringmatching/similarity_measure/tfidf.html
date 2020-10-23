@@ -1,0 +1,400 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>py_stringmatching.similarity_measure.tfidf &mdash; py_stringmatching 0.4.2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> py_stringmatching
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../WhatIsNew.html">What is New?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Tokenizer.html">Tokenizers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SimilarityMeasure.html">Similarity Measures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Benchmark.html">Runtime Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Contributing.html">Contributing to py_stringmatching</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">py_stringmatching</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>py_stringmatching.similarity_measure.tfidf</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for py_stringmatching.similarity_measure.tfidf</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">sqrt</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+
+<span class="kn">from</span> <span class="nn">py_stringmatching</span> <span class="kn">import</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">py_stringmatching.similarity_measure.token_similarity_measure</span> <span class="kn">import</span> \
+                                                    <span class="n">TokenSimilarityMeasure</span>
+
+
+<div class="viewcode-block" id="TfIdf"><a class="viewcode-back" href="../../../TfIdf.html#py_stringmatching.similarity_measure.tfidf.TfIdf">[docs]</a><span class="k">class</span> <span class="nc">TfIdf</span><span class="p">(</span><span class="n">TokenSimilarityMeasure</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computes TF/IDF measure.</span>
+
+<span class="sd">    This measure employs the notion of TF/IDF score commonly used in information retrieval (IR) to</span>
+<span class="sd">    find documents that are relevant to keyword queries. The intuition underlying the TF/IDF measure</span>
+<span class="sd">    is that two strings are similar if they share distinguishing terms. See the string matching chapter in the book &quot;Principles of Data Integration&quot;</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        corpus_list (list of lists): The corpus that will be used to compute TF and IDF values. This corpus is a list of strings, where each string has been tokenized into a list of tokens (that is, a bag of tokens). The default is set to None. In this case, when we call this TF/IDF measure on two input strings (using get_raw_score or get_sim_score), the corpus is taken to be the list of those two strings. </span>
+<span class="sd">        dampen (boolean): Flag to indicate whether &#39;log&#39; should be used in TF and IDF formulas (defaults to True). </span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        dampen (boolean): An attribute to store the dampen flag.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">corpus_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dampen</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__corpus_list</span> <span class="o">=</span> <span class="n">corpus_list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__document_frequency</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__compute_document_frequency</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__corpus_size</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__corpus_list</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">(</span>
+                                                         <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__corpus_list</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dampen</span> <span class="o">=</span> <span class="n">dampen</span>        
+        <span class="nb">super</span><span class="p">(</span><span class="n">TfIdf</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="TfIdf.get_raw_score"><a class="viewcode-back" href="../../../TfIdf.html#py_stringmatching.similarity_measure.tfidf.TfIdf.get_raw_score">[docs]</a>    <span class="k">def</span> <span class="nf">get_raw_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bag1</span><span class="p">,</span> <span class="n">bag2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Computes the raw TF/IDF score between two lists.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            bag1,bag2 (list): Input lists.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            TF/IDF score between the input lists (float).</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError : If the inputs are not lists or if one of the inputs is None.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            </span>
+<span class="sd">            &gt;&gt;&gt; # here the corpus is a list of three strings that </span>
+<span class="sd">            &gt;&gt;&gt; # have been tokenized into three lists of tokens</span>
+<span class="sd">            &gt;&gt;&gt; tfidf = TfIdf([[&#39;a&#39;, &#39;b&#39;, &#39;a&#39;], [&#39;a&#39;, &#39;c&#39;], [&#39;a&#39;]])</span>
+<span class="sd">            &gt;&gt;&gt; tfidf.get_raw_score([&#39;a&#39;, &#39;b&#39;, &#39;a&#39;], [&#39;b&#39;, &#39;c&#39;])</span>
+<span class="sd">            0.7071067811865475</span>
+<span class="sd">            &gt;&gt;&gt; tfidf.get_raw_score([&#39;a&#39;, &#39;b&#39;, &#39;a&#39;], [&#39;a&#39;])</span>
+<span class="sd">            0.0</span>
+<span class="sd">            &gt;&gt;&gt; tfidf = TfIdf([[&#39;x&#39;, &#39;y&#39;], [&#39;w&#39;], [&#39;q&#39;]])</span>
+<span class="sd">            &gt;&gt;&gt; tfidf.get_raw_score([&#39;a&#39;, &#39;b&#39;, &#39;a&#39;], [&#39;a&#39;])</span>
+<span class="sd">            0.0</span>
+<span class="sd">            &gt;&gt;&gt; tfidf = TfIdf([[&#39;a&#39;, &#39;b&#39;, &#39;a&#39;], [&#39;a&#39;, &#39;c&#39;], [&#39;a&#39;], [&#39;b&#39;]], False)</span>
+<span class="sd">            &gt;&gt;&gt; tfidf.get_raw_score([&#39;a&#39;, &#39;b&#39;, &#39;a&#39;], [&#39;a&#39;, &#39;c&#39;])</span>
+<span class="sd">            0.25298221281347033</span>
+<span class="sd">            &gt;&gt;&gt; tfidf = TfIdf(dampen=False)</span>
+<span class="sd">            &gt;&gt;&gt; tfidf.get_raw_score([&#39;a&#39;, &#39;b&#39;, &#39;a&#39;], [&#39;a&#39;])</span>
+<span class="sd">            0.7071067811865475</span>
+<span class="sd">            &gt;&gt;&gt; tfidf = TfIdf()</span>
+<span class="sd">            &gt;&gt;&gt; tfidf.get_raw_score([&#39;a&#39;, &#39;b&#39;, &#39;a&#39;], [&#39;a&#39;])</span>
+<span class="sd">            0.0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># input validations</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">sim_check_for_none</span><span class="p">(</span><span class="n">bag1</span><span class="p">,</span> <span class="n">bag2</span><span class="p">)</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">sim_check_for_list_or_set_inputs</span><span class="p">(</span><span class="n">bag1</span><span class="p">,</span> <span class="n">bag2</span><span class="p">)</span>
+
+        <span class="c1"># if the strings match exactly return 1.0</span>
+        <span class="k">if</span> <span class="n">utils</span><span class="o">.</span><span class="n">sim_check_for_exact_match</span><span class="p">(</span><span class="n">bag1</span><span class="p">,</span> <span class="n">bag2</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mf">1.0</span>
+
+        <span class="c1"># if one of the strings is empty return 0</span>
+        <span class="k">if</span> <span class="n">utils</span><span class="o">.</span><span class="n">sim_check_for_empty</span><span class="p">(</span><span class="n">bag1</span><span class="p">,</span> <span class="n">bag2</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="c1"># term frequency for input strings</span>
+        <span class="n">tf_x</span><span class="p">,</span> <span class="n">tf_y</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span><span class="n">bag1</span><span class="p">),</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span><span class="n">bag2</span><span class="p">)</span>
+         
+        <span class="c1"># find unique elements in the input lists and their document frequency </span>
+        <span class="n">local_df</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">tf_x</span><span class="p">:</span>
+            <span class="n">local_df</span><span class="p">[</span><span class="n">element</span><span class="p">]</span> <span class="o">=</span> <span class="n">local_df</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">tf_y</span><span class="p">:</span>
+            <span class="n">local_df</span><span class="p">[</span><span class="n">element</span><span class="p">]</span> <span class="o">=</span> <span class="n">local_df</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="c1"># if corpus is not provided treat input string as corpus</span>
+        <span class="n">curr_df</span><span class="p">,</span> <span class="n">corpus_size</span> <span class="o">=</span> <span class="p">(</span><span class="n">local_df</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__corpus_list</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">(</span>
+                                   <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__document_frequency</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__corpus_size</span><span class="p">))</span>
+
+        <span class="n">idf_element</span><span class="p">,</span> <span class="n">v_x</span><span class="p">,</span> <span class="n">v_y</span><span class="p">,</span> <span class="n">v_x_y</span><span class="p">,</span> <span class="n">v_x_2</span><span class="p">,</span> <span class="n">v_y_2</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> 
+                                                      <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+
+        <span class="c1"># tfidf calculation</span>
+        <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">local_df</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">df_element</span> <span class="o">=</span> <span class="n">curr_df</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">df_element</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">idf_element</span> <span class="o">=</span> <span class="n">corpus_size</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">df_element</span>
+            <span class="n">v_x</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">element</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tf_x</span> <span class="k">else</span> <span class="p">(</span><span class="n">log</span><span class="p">(</span><span class="n">idf_element</span><span class="p">)</span> <span class="o">*</span> <span class="n">log</span><span class="p">(</span><span class="n">tf_x</span><span class="p">[</span><span class="n">element</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dampen</span> <span class="k">else</span> <span class="p">(</span>
+                  <span class="n">idf_element</span> <span class="o">*</span> <span class="n">tf_x</span><span class="p">[</span><span class="n">element</span><span class="p">])</span>
+            <span class="n">v_y</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">element</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tf_y</span> <span class="k">else</span> <span class="p">(</span><span class="n">log</span><span class="p">(</span><span class="n">idf_element</span><span class="p">)</span> <span class="o">*</span> <span class="n">log</span><span class="p">(</span><span class="n">tf_y</span><span class="p">[</span><span class="n">element</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dampen</span> <span class="k">else</span> <span class="p">(</span>
+                  <span class="n">idf_element</span> <span class="o">*</span> <span class="n">tf_y</span><span class="p">[</span><span class="n">element</span><span class="p">])</span>
+            <span class="n">v_x_y</span> <span class="o">+=</span> <span class="n">v_x</span> <span class="o">*</span> <span class="n">v_y</span>
+            <span class="n">v_x_2</span> <span class="o">+=</span> <span class="n">v_x</span> <span class="o">*</span> <span class="n">v_x</span>
+            <span class="n">v_y_2</span> <span class="o">+=</span> <span class="n">v_y</span> <span class="o">*</span> <span class="n">v_y</span>
+
+        <span class="k">return</span> <span class="mf">0.0</span> <span class="k">if</span> <span class="n">v_x_y</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">v_x_y</span> <span class="o">/</span> <span class="p">(</span><span class="n">sqrt</span><span class="p">(</span><span class="n">v_x_2</span><span class="p">)</span> <span class="o">*</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">v_y_2</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="TfIdf.get_sim_score"><a class="viewcode-back" href="../../../TfIdf.html#py_stringmatching.similarity_measure.tfidf.TfIdf.get_sim_score">[docs]</a>    <span class="k">def</span> <span class="nf">get_sim_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bag1</span><span class="p">,</span> <span class="n">bag2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Computes the normalized TF/IDF similarity score between two lists. Simply call get_raw_score.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            bag1,bag2 (list): Input lists.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Normalized TF/IDF similarity score between the input lists (float).</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError : If the inputs are not lists or if one of the inputs is None.</span>
+
+<span class="sd">        Examples:</span>
+
+<span class="sd">            &gt;&gt;&gt; # here the corpus is a list of three strings that </span>
+<span class="sd">            &gt;&gt;&gt; # have been tokenized into three lists of tokens</span>
+<span class="sd">            &gt;&gt;&gt; tfidf = TfIdf([[&#39;a&#39;, &#39;b&#39;, &#39;a&#39;], [&#39;a&#39;, &#39;c&#39;], [&#39;a&#39;]])</span>
+<span class="sd">            &gt;&gt;&gt; tfidf.get_sim_score([&#39;a&#39;, &#39;b&#39;, &#39;a&#39;], [&#39;b&#39;, &#39;c&#39;])</span>
+<span class="sd">            0.7071067811865475</span>
+<span class="sd">            &gt;&gt;&gt; tfidf.get_sim_score([&#39;a&#39;, &#39;b&#39;, &#39;a&#39;], [&#39;a&#39;])</span>
+<span class="sd">            0.0</span>
+<span class="sd">            &gt;&gt;&gt; tfidf = TfIdf([[&#39;x&#39;, &#39;y&#39;], [&#39;w&#39;], [&#39;q&#39;]])</span>
+<span class="sd">            &gt;&gt;&gt; tfidf.get_sim_score([&#39;a&#39;, &#39;b&#39;, &#39;a&#39;], [&#39;a&#39;])</span>
+<span class="sd">            0.0</span>
+<span class="sd">            &gt;&gt;&gt; tfidf = TfIdf([[&#39;a&#39;, &#39;b&#39;, &#39;a&#39;], [&#39;a&#39;, &#39;c&#39;], [&#39;a&#39;], [&#39;b&#39;]], False)</span>
+<span class="sd">            &gt;&gt;&gt; tfidf.get_sim_score([&#39;a&#39;, &#39;b&#39;, &#39;a&#39;], [&#39;a&#39;, &#39;c&#39;])</span>
+<span class="sd">            0.25298221281347033</span>
+<span class="sd">            &gt;&gt;&gt; tfidf = TfIdf(dampen=False)</span>
+<span class="sd">            &gt;&gt;&gt; tfidf.get_sim_score([&#39;a&#39;, &#39;b&#39;, &#39;a&#39;], [&#39;a&#39;])</span>
+<span class="sd">            0.7071067811865475</span>
+<span class="sd">            &gt;&gt;&gt; tfidf = TfIdf()</span>
+<span class="sd">            &gt;&gt;&gt; tfidf.get_sim_score([&#39;a&#39;, &#39;b&#39;, &#39;a&#39;], [&#39;a&#39;])</span>
+<span class="sd">            0.0            </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_raw_score</span><span class="p">(</span><span class="n">bag1</span><span class="p">,</span> <span class="n">bag2</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TfIdf.get_dampen"><a class="viewcode-back" href="../../../TfIdf.html#py_stringmatching.similarity_measure.tfidf.TfIdf.get_dampen">[docs]</a>    <span class="k">def</span> <span class="nf">get_dampen</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get dampen flag.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dampen flag (boolean).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dampen</span></div>
+
+<div class="viewcode-block" id="TfIdf.get_corpus_list"><a class="viewcode-back" href="../../../TfIdf.html#py_stringmatching.similarity_measure.tfidf.TfIdf.get_corpus_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_corpus_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get corpus list.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            corpus list (list of lists).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__corpus_list</span></div>
+
+<div class="viewcode-block" id="TfIdf.set_dampen"><a class="viewcode-back" href="../../../TfIdf.html#py_stringmatching.similarity_measure.tfidf.TfIdf.set_dampen">[docs]</a>    <span class="k">def</span> <span class="nf">set_dampen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dampen</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set dampen flag.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dampen (boolean): Flag to indicate whether &#39;log&#39; should be applied to TF and IDF formulas.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dampen</span> <span class="o">=</span> <span class="n">dampen</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="TfIdf.set_corpus_list"><a class="viewcode-back" href="../../../TfIdf.html#py_stringmatching.similarity_measure.tfidf.TfIdf.set_corpus_list">[docs]</a>    <span class="k">def</span> <span class="nf">set_corpus_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">corpus_list</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set corpus list.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            corpus_list (list of lists): Corpus list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__corpus_list</span> <span class="o">=</span> <span class="n">corpus_list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__document_frequency</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__compute_document_frequency</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__corpus_size</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__corpus_list</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">(</span>
+                                                         <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__corpus_list</span><span class="p">))</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+    <span class="k">def</span> <span class="nf">__compute_document_frequency</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__corpus_list</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">document</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__corpus_list</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">document</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__document_frequency</span><span class="p">[</span><span class="n">element</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span> 
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__document_frequency</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016, py_stringmatching Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

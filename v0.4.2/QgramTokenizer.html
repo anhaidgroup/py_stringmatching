@@ -1,0 +1,491 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Qgram Tokenizer &mdash; py_stringmatching 0.4.2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Whitespace Tokenizer" href="WhitespaceTokenizer.html" />
+    <link rel="prev" title="Delimiter Tokenizer" href="DelimiterTokenizer.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> py_stringmatching
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="WhatIsNew.html">What is New?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="Tokenizer.html">Tokenizers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="AlphabeticTokenizer.html">Alphabetic Tokenizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AlphanumericTokenizer.html">Alphanumeric Tokenizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DelimiterTokenizer.html">Delimiter Tokenizer</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Qgram Tokenizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="WhitespaceTokenizer.html">Whitespace Tokenizer</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SimilarityMeasure.html">Similarity Measures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Benchmark.html">Runtime Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Contributing.html">Contributing to py_stringmatching</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">py_stringmatching</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="Tokenizer.html">Tokenizers</a> &raquo;</li>
+        
+      <li>Qgram Tokenizer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/QgramTokenizer.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-py_stringmatching.tokenizer.qgram_tokenizer">
+<span id="qgram-tokenizer"></span><h1>Qgram Tokenizer<a class="headerlink" href="#module-py_stringmatching.tokenizer.qgram_tokenizer" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer">
+<em class="property">class </em><code class="sig-prename descclassname">py_stringmatching.tokenizer.qgram_tokenizer.</code><code class="sig-name descname">QgramTokenizer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qval</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">padding</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">prefix_pad</span><span class="o">=</span><span class="default_value">'#'</span></em>, <em class="sig-param"><span class="n">suffix_pad</span><span class="o">=</span><span class="default_value">'$'</span></em>, <em class="sig-param"><span class="n">return_set</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/tokenizer/qgram_tokenizer.html#QgramTokenizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns tokens that are sequences of q consecutive characters.</p>
+<p>A qgram of an input string s is a substring t (of s) which is a sequence of q consecutive characters. Qgrams are also known as
+ngrams or kgrams.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qval</strong> (<em>int</em>) – A value for q, that is, the qgram’s length (defaults to 2).</p></li>
+<li><p><strong>return_set</strong> (<em>boolean</em>) – A flag to indicate whether to return a set of
+tokens or a bag of tokens (defaults to False).</p></li>
+<li><p><strong>padding</strong> (<em>boolean</em>) – A flag to indicate whether a prefix and a suffix should be added
+to the input string (defaults to True).</p></li>
+<li><p><strong>prefix_pad</strong> (<em>str</em>) – A character (that is, a string of length 1 in Python) that should be replicated
+(qval-1) times and prepended to the input string, if padding was
+set to True (defaults to ‘#’).</p></li>
+<li><p><strong>suffix_pad</strong> (<em>str</em>) – A character (that is, a string of length 1 in Python) that should be replicated
+(qval-1) times and appended to the input string, if padding was
+set to True (defaults to ‘$’).</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.qval">
+<code class="sig-name descname">qval</code><a class="headerlink" href="#py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.qval" title="Permalink to this definition">¶</a></dt>
+<dd><p>An attribute to store the q value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.return_set">
+<code class="sig-name descname">return_set</code><a class="headerlink" href="#py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.return_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>An attribute to store the flag return_set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.padding">
+<code class="sig-name descname">padding</code><a class="headerlink" href="#py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.padding" title="Permalink to this definition">¶</a></dt>
+<dd><p>An attribute to store the padding flag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.prefix_pad">
+<code class="sig-name descname">prefix_pad</code><a class="headerlink" href="#py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.prefix_pad" title="Permalink to this definition">¶</a></dt>
+<dd><p>An attribute to store the prefix string that should be used for padding.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.suffix_pad">
+<code class="sig-name descname">suffix_pad</code><a class="headerlink" href="#py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.suffix_pad" title="Permalink to this definition">¶</a></dt>
+<dd><p>An attribute to store the suffix string that should
+be used for padding.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.get_padding">
+<code class="sig-name descname">get_padding</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/tokenizer/qgram_tokenizer.html#QgramTokenizer.get_padding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.get_padding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the value of the padding flag. This flag determines whether the
+padding should be done for the input strings or not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The Boolean value of the padding flag.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.get_prefix_pad">
+<code class="sig-name descname">get_prefix_pad</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/tokenizer/qgram_tokenizer.html#QgramTokenizer.get_prefix_pad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.get_prefix_pad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the value of the prefix pad.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The prefix pad string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.get_qval">
+<code class="sig-name descname">get_qval</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/tokenizer/qgram_tokenizer.html#QgramTokenizer.get_qval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.get_qval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the value of the qval attribute, which is the length of qgrams.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The value of the qval attribute.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.get_return_set">
+<code class="sig-name descname">get_return_set</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.get_return_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the value of the return_set flag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The boolean value of the return_set flag.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.get_suffix_pad">
+<code class="sig-name descname">get_suffix_pad</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/tokenizer/qgram_tokenizer.html#QgramTokenizer.get_suffix_pad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.get_suffix_pad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the value of the suffix pad.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The suffix pad string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.set_padding">
+<code class="sig-name descname">set_padding</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">padding</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/tokenizer/qgram_tokenizer.html#QgramTokenizer.set_padding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.set_padding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the value of the padding flag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>padding</strong> (<em>boolean</em>) – Flag to indicate whether padding should be
+done or not.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The Boolean value of True is returned if the update was
+successful.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>AssertionError</strong> – If the padding is not of type boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.set_prefix_pad">
+<code class="sig-name descname">set_prefix_pad</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prefix_pad</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/tokenizer/qgram_tokenizer.html#QgramTokenizer.set_prefix_pad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.set_prefix_pad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the value of the prefix pad string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>prefix_pad</strong> (<em>str</em>) – String that should be prepended to the
+input string before tokenization.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The Boolean value of True is returned if the update was
+successful.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>AssertionError</strong> – If the prefix_pad is not of type string.</p></li>
+<li><p><strong>AssertionError</strong> – If the length of prefix_pad is not one.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.set_qval">
+<code class="sig-name descname">set_qval</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qval</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/tokenizer/qgram_tokenizer.html#QgramTokenizer.set_qval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.set_qval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the value of the qval attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>qval</strong> (<em>int</em>) – A value for q (the length of qgrams).</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>AssertionError</strong> – If qval is less than 1.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.set_return_set">
+<code class="sig-name descname">set_return_set</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">return_set</span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.set_return_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the value of the return_set flag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>return_set</strong> (<em>boolean</em>) – a flag to indicate whether to return a set of tokens instead of a bag of tokens.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.set_suffix_pad">
+<code class="sig-name descname">set_suffix_pad</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">suffix_pad</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/tokenizer/qgram_tokenizer.html#QgramTokenizer.set_suffix_pad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.set_suffix_pad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the value of the suffix pad string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>suffix_pad</strong> (<em>str</em>) – String that should be appended to the
+input string before tokenization.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The boolean value of True is returned if the update was
+successful.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>AssertionError</strong> – If the suffix_pad is not of type string.</p></li>
+<li><p><strong>AssertionError</strong> – If the length of suffix_pad is not one.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.tokenize">
+<code class="sig-name descname">tokenize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_string</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/tokenizer/qgram_tokenizer.html#QgramTokenizer.tokenize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.tokenize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tokenizes input string into qgrams.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>input_string</strong> (<em>str</em>) – The string to be tokenized.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A Python list, which is a set or a bag of qgrams, depending on whether return_set flag is True or False.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>TypeError</strong> – If the input is not a string</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qg2_tok</span> <span class="o">=</span> <span class="n">QgramTokenizer</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qg2_tok</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="s1">&#39;database&#39;</span><span class="p">)</span>
+<span class="go">[&#39;#d&#39;, &#39;da&#39;, &#39;at&#39;, &#39;ta&#39;, &#39;ab&#39;, &#39;ba&#39;, &#39;as&#39;, &#39;se&#39;, &#39;e$&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qg2_tok</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+<span class="go">[&#39;#a&#39;, &#39;a$&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qg3_tok</span> <span class="o">=</span> <span class="n">QgramTokenizer</span><span class="p">(</span><span class="n">qval</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qg3_tok</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="s1">&#39;database&#39;</span><span class="p">)</span>
+<span class="go">[&#39;##d&#39;, &#39;#da&#39;, &#39;dat&#39;, &#39;ata&#39;, &#39;tab&#39;, &#39;aba&#39;, &#39;bas&#39;, &#39;ase&#39;, &#39;se$&#39;, &#39;e$$&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qg3_nopad</span> <span class="o">=</span> <span class="n">QgramTokenizer</span><span class="p">(</span><span class="n">padding</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qg3_nopad</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="s1">&#39;database&#39;</span><span class="p">)</span>
+<span class="go">[&#39;da&#39;, &#39;at&#39;, &#39;ta&#39;, &#39;ab&#39;, &#39;ba&#39;, &#39;as&#39;, &#39;se&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qg3_diffpads</span> <span class="o">=</span> <span class="n">QgramTokenizer</span><span class="p">(</span><span class="n">prefix_pad</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="n">suffix_pad</span><span class="o">=</span><span class="s1">&#39;!&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qg3_diffpads</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="s1">&#39;database&#39;</span><span class="p">)</span>
+<span class="go">[&#39;^d&#39;, &#39;da&#39;, &#39;at&#39;, &#39;ta&#39;, &#39;ab&#39;, &#39;ba&#39;, &#39;as&#39;, &#39;se&#39;, &#39;e!&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="WhitespaceTokenizer.html" class="btn btn-neutral float-right" title="Whitespace Tokenizer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="DelimiterTokenizer.html" class="btn btn-neutral float-left" title="Delimiter Tokenizer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016, py_stringmatching Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

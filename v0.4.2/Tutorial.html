@@ -1,0 +1,469 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Tutorial &mdash; py_stringmatching 0.4.2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Tokenizers" href="Tokenizer.html" />
+    <link rel="prev" title="Installation" href="Installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> py_stringmatching
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="WhatIsNew.html">What is New?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#selecting-a-similarity-measure">1. Selecting a Similarity Measure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#selecting-a-tokenizer-type">2. Selecting a Tokenizer Type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-a-tokenizer-object-and-using-it-to-tokenize-the-input-strings">3. Creating a Tokenizer Object and Using It to Tokenize the Input Strings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-a-similarity-measure-object-and-using-it-to-compute-a-similarity-score">4. Creating a Similarity Measure Object and Using It to Compute a Similarity Score</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#handling-a-large-number-of-string-pairs">Handling a Large Number of String Pairs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#handling-missing-values">Handling Missing Values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-prefix-and-suffix-to-the-input-string-for-qgram-tokenizers">Adding Prefix and Suffix to the Input String for Qgram Tokenizers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#class-hierarchy-for-tokenizers-and-similarity-measures">Class Hierarchy for Tokenizers and Similarity Measures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Tokenizer.html">Tokenizers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SimilarityMeasure.html">Similarity Measures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Benchmark.html">Runtime Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Contributing.html">Contributing to py_stringmatching</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">py_stringmatching</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Tutorial</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/Tutorial.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tutorial">
+<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
+<p>Once the package has been installed, you can import the package as follows:</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">py_stringmatching</span> <span class="k">as</span> <span class="nn">sm</span>
+</pre></div>
+</div>
+<p>Computing a similarity score between two given strings <strong>x</strong> and <strong>y</strong> then typically consists of four steps: (1) selecting a similarity measure type, (2) selecting a tokenizer type, (3) creating a tokenizer object (of the selected type) and using it to tokenize the two given strings <strong>x</strong> and <strong>y</strong>, and (4) creating a similarity measure object (of the selected type) and applying it to the output of the tokenizer to compute a similarity score. We now elaborate on these steps.</p>
+<div class="section" id="selecting-a-similarity-measure">
+<h2>1. Selecting a Similarity Measure<a class="headerlink" href="#selecting-a-similarity-measure" title="Permalink to this headline">¶</a></h2>
+<p>First, you must select a similarity measure. The package py_stringmatching currently provides a set of different measures (with plan to add more). Examples of such measures are Jaccard, Levenshtein, TF/IDF, etc. To understand more about these measures, a good place to start is the string matching chapter of the book “Principles of Data Integration”. (This chapter is available on the package’s homepage.)</p>
+<p>A major group of similarity measures treats input strings as <strong>sequences</strong> of characters (e.g., Levenshtein, Smith Waterman). Another group treats input strings as <strong>sets</strong> of tokens (e.g., Jaccard). Yet another group treats input strings as <strong>bags</strong> of tokens (e.g., TF/IDF). A bag of tokens is a collection of tokens such that a token can appear multiple times in the collection (as opposed to a set of tokens, where each token can appear only once).</p>
+<dl class="simple">
+<dt>The currently implemented similarity measures include:</dt><dd><ul class="simple">
+<li><p>sequence-based measures: affine gap, bag distance, editex, Hamming distance, Jaro, Jaro Winkler, Levenshtein, Needleman Wunsch, partial ratio, partial token sort, ratio, Smith Waterman, token sort.</p></li>
+<li><p>set-based measures: cosine, Dice, Jaccard, overlap coefficient, Tversky Index.</p></li>
+<li><p>bag-based measures: TF/IDF.</p></li>
+<li><p>phonetic-based measures: soundex.</p></li>
+</ul>
+</dd>
+</dl>
+<p>(There are also hybrid similarity measures: Monge Elkan, Soft TF/IDF, and Generalized Jaccard. They are so called because each of these measures uses multiple similarity measures. See their descriptions in this user manual to understand what types of input they expect.)</p>
+<p>At this point, you should know if the selected similarity measure treats input strings as sequences, bags, or sets, so that later you can set the parameters of the tokenizing function properly (see Steps 2-3 below).</p>
+</div>
+<div class="section" id="selecting-a-tokenizer-type">
+<h2>2. Selecting a Tokenizer Type<a class="headerlink" href="#selecting-a-tokenizer-type" title="Permalink to this headline">¶</a></h2>
+<p>If the above selected similarity measure treats input strings as sequences of characters, then you do not need to tokenize the input strings <strong>x</strong> and <strong>y</strong>, and hence do not have to select a tokenizer type.</p>
+<p>Otherwise, you need to select a tokenizer type. The package py_stringmatching currently provides a set of different tokenizer types: alphabetical tokenizer, alphanumeric tokenizer, delimiter-based tokenizer, qgram tokenizer, and whitespace tokenizer (more tokenizer types can easily be added).</p>
+<p>A tokenizer will convert an input string into a set or a bag of tokens, as discussed in Step 3.</p>
+</div>
+<div class="section" id="creating-a-tokenizer-object-and-using-it-to-tokenize-the-input-strings">
+<h2>3. Creating a Tokenizer Object and Using It to Tokenize the Input Strings<a class="headerlink" href="#creating-a-tokenizer-object-and-using-it-to-tokenize-the-input-strings" title="Permalink to this headline">¶</a></h2>
+<p>If you have selected a tokenizer type in Step 2, then in Step 3 you create a tokenizer object of that type. If the intended similarity measure (selected in Step 1) treats the input strings as <strong>sets</strong> of tokens, then when creating the tokenizer object, you must set the flag return_set to True. Otherwise this flag defaults to False, and the created tokenizer object will tokenize a string into a <strong>bag</strong> of tokens.</p>
+<p>The following examples create tokenizer objects where the flag return_set is not mentioned, thus defaulting to False. So these tokenizer objects will tokenize a string into a bag of tokens.</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="go"># create an alphabetical tokenizer that returns a bag of tokens</span>
+<span class="gp">In [2]: </span><span class="n">alphabet_tok</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">AlphabeticTokenizer</span><span class="p">()</span>
+
+<span class="go"># create an alphanumeric tokenizer</span>
+<span class="gp">In [3]: </span><span class="n">alnum_tok</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">AlphanumericTokenizer</span><span class="p">()</span>
+
+<span class="go"># create a delimiter tokenizer using comma as a delimiter</span>
+<span class="gp">In [4]: </span><span class="n">delim_tok</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">DelimiterTokenizer</span><span class="p">(</span><span class="n">delim_set</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;,&#39;</span><span class="p">])</span>
+
+<span class="go"># create a qgram tokenizer using q=3</span>
+<span class="gp">In [5]: </span><span class="n">qg3_tok</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">QgramTokenizer</span><span class="p">(</span><span class="n">qval</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="go"># create a whitespace tokenizer</span>
+<span class="gp">In [6]: </span><span class="n">ws_tok</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">WhitespaceTokenizer</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Given the string “up up and away”, the tokenizer alphabet_tok (defined above) will convert it into a bag of tokens [‘up’, ‘up’, ‘and’, ‘away’], where the token ‘up’ appears twice.</p>
+<p>The following examples create tokenizer objects where the flag return_set is set to True. Thus these tokenizers will tokenize a string into a set of tokens.</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="go"># create an alphabetical tokenizer that returns a set of tokens</span>
+<span class="gp">In [7]: </span><span class="n">alphabet_tok_set</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">AlphabeticTokenizer</span><span class="p">(</span><span class="n">return_set</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="go"># create a whitespace tokenizer that returns a set of tokens</span>
+<span class="gp">In [8]: </span><span class="n">ws_tok_set</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">WhitespaceTokenizer</span><span class="p">(</span><span class="n">return_set</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="go"># create a qgram tokenizer with q=3 that returns a set of tokens</span>
+<span class="gp">In [9]: </span><span class="n">qg3_tok_set</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">QgramTokenizer</span><span class="p">(</span><span class="n">qval</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">return_set</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>So given the same string “up up and away”, the tokenizer alphabet_tok_set (defined above) will convert it into a set of tokens [‘up’, ‘and’, ‘away’].</p>
+<p>All tokenizers have a <strong>tokenize</strong> method which tokenizes a given input string into a set or bag of tokens (depending on whether the flag return_set is True or False), as these examples illustrate:</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [10]: </span><span class="n">test_string</span> <span class="o">=</span> <span class="s1">&#39; .hello, world!! data, science, is    amazing!!. hello.&#39;</span>
+
+<span class="go"># tokenize into a bag of alphabetical tokens</span>
+<span class="gp">In [11]: </span><span class="n">alphabet_tok</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">test_string</span><span class="p">)</span>
+<span class="gh">Out[11]: </span><span class="go">[&#39;hello&#39;, &#39;world&#39;, &#39;data&#39;, &#39;science&#39;, &#39;is&#39;, &#39;amazing&#39;, &#39;hello&#39;]</span>
+
+<span class="go"># tokenize into alphabetical tokens (with return_set set to True)</span>
+<span class="gp">In [12]: </span><span class="n">alphabet_tok_set</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">test_string</span><span class="p">)</span>
+<span class="gh">Out[12]: </span><span class="go">[&#39;hello&#39;, &#39;world&#39;, &#39;data&#39;, &#39;science&#39;, &#39;is&#39;, &#39;amazing&#39;]</span>
+
+<span class="go"># tokenize using comma as the delimiter</span>
+<span class="gp">In [13]: </span><span class="n">delim_tok</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">test_string</span><span class="p">)</span>
+<span class="gh">Out[13]: </span><span class="go">[&#39; .hello&#39;, &#39; world!! data&#39;, &#39; science&#39;, &#39; is    amazing!!. hello.&#39;]</span>
+
+<span class="go"># tokenize using whitespace as the delimiter</span>
+<span class="gp">In [14]: </span><span class="n">ws_tok</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">test_string</span><span class="p">)</span>
+<span class="gh">Out[14]: </span><span class="go">[&#39;.hello,&#39;, &#39;world!!&#39;, &#39;data,&#39;, &#39;science,&#39;, &#39;is&#39;, &#39;amazing!!.&#39;, &#39;hello.&#39;]</span>
+</pre></div>
+</div>
+<p>Thus, once you have created the tokenizer, you can use the <strong>tokenize</strong> method to tokenize the two input strings <strong>x</strong> and <strong>y</strong> (see more in Step 4 below).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <strong>tokenize</strong> method returns a <strong>Python list</strong> which represents a set of tokens or a bag of tokens, depending on whether the flag return_set is True or False.</p>
+</div>
+</div>
+<div class="section" id="creating-a-similarity-measure-object-and-using-it-to-compute-a-similarity-score">
+<h2>4. Creating a Similarity Measure Object and Using It to Compute a Similarity Score<a class="headerlink" href="#creating-a-similarity-measure-object-and-using-it-to-compute-a-similarity-score" title="Permalink to this headline">¶</a></h2>
+<p>Recall that in Step 1 you have selected a similarity measure (e.g., Jaccard, Levenshtein). In this step you start by creating a similarity measure object of the selected type, as illustrated by these examples:</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="go"># create a Jaccard similarity measure object</span>
+<span class="gp">In [15]: </span><span class="n">jac</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Jaccard</span><span class="p">()</span>
+
+<span class="go"># create a Levenshtein similarity measure object</span>
+<span class="gp">In [16]: </span><span class="n">lev</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Levenshtein</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>There are two main types of similarity measures.</p>
+<ol class="arabic simple">
+<li><p>Those that when given two input strings will compute a true similarity score, which is a number in the range [0,1] such that the higher this number, the more similar the two input strings are.</p></li>
+<li><p>Those that when given two input strings will compute a distance score, which is a number such that the higher this number, the more <strong>dissimilar</strong> the two input strings are (this number is often not in the range [0,1]). Clearly, Type-2 measures (also known as distance measures), are the reverse of Type-1 measures.</p></li>
+</ol>
+<p>For example, Jaccard similarity measure will compute a true similarity score in [0,1] for two input strings. Levenshtein similarity measure, on the other hand, is really a distance measure, which computes the edit distance between the two input strings (see for example Wikipedia or the string matching chapter in the book “Principles of Data Integration”). It is easy to convert a distance score into a true similarity score (again, see examples in the above book chapter).</p>
+<p>Given the above, each similarity measure object in py_stringmatching is supplied with two methods: <strong>get_raw_score</strong> and <strong>get_sim_score</strong>. The first method will compute the raw score as defined by that type of similarity measures, be it similarity score or distance score. For example, for Jaccard this method will return a true similarity score, whereas for Levenshtein it will return an edit distance score.</p>
+<p>The method <strong>get_sim_score</strong> normalizes the raw score to obtain a true similarity score (a number in [0,1], such that the higher this number the more similar the two strings are). For Jaccard, <strong>get_sim_score</strong> will simply call <strong>get_raw_score</strong>. For Levenshtein, however, <strong>get_sim_score</strong> will normalize the edit distance to return a true similarity score in [0,1].</p>
+<p>Here are some examples of using the <strong>get_raw_score</strong> method:</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="go"># input strings</span>
+<span class="gp">In [17]: </span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;string matching package&#39;</span>
+
+<span class="gp">In [18]: </span><span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;string matching library&#39;</span>
+
+<span class="go"># compute Jaccard score over sets of tokens of x and y, tokenized using whitespace</span>
+<span class="gp">In [19]: </span><span class="n">jac</span><span class="o">.</span><span class="n">get_raw_score</span><span class="p">(</span><span class="n">ws_tok_set</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">ws_tok_set</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+<span class="gh">Out[19]: </span><span class="go">0.5</span>
+
+<span class="go"># compute Jaccard score over sets of tokens of x and y, tokenized into qgrams (with q=3)</span>
+<span class="gp">In [20]: </span><span class="n">jac</span><span class="o">.</span><span class="n">get_raw_score</span><span class="p">(</span><span class="n">qg3_tok_set</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">qg3_tok_set</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+<span class="gh">Out[20]: </span><span class="go">0.4375</span>
+
+<span class="go"># compute Levenshtein distance between x and y</span>
+<span class="gp">In [21]: </span><span class="n">lev</span><span class="o">.</span><span class="n">get_raw_score</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="gh">Out[21]: </span><span class="go">6</span>
+</pre></div>
+</div>
+<p>Note that in the above examples, the Jaccard measure treats the input strings as sets of tokens. And indeed, the two tokenizers ws_tok_set and qg3_tok_set as defined earlier would tokenize a string into a set of tokens. The Levenshtein measure, on the other hand, treats the input strings as sequences of characters. Hence when using it we do not have to tokenize the two strings <strong>x</strong> and <strong>y</strong>.</p>
+<p>Here are some example of using the <strong>get_sim_score</strong> method:</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="go"># get normalized Levenshtein similarity score between x and y</span>
+<span class="gp">In [22]: </span><span class="n">lev</span><span class="o">.</span><span class="n">get_sim_score</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="gh">Out[22]: </span><span class="go">0.7391304347826086</span>
+
+<span class="go"># get normalized Jaccard similarity score (this is the same as the raw score)</span>
+<span class="gp">In [23]: </span><span class="n">jac</span><span class="o">.</span><span class="n">get_sim_score</span><span class="p">(</span><span class="n">ws_tok_set</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">ws_tok_set</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+<span class="gh">Out[23]: </span><span class="go">0.5</span>
+</pre></div>
+</div>
+<p>So depending on what you want, you can call <strong>get_raw_score</strong> or <strong>get_sim_score</strong>. Note, however, that certain measures such as affine gap, Monge-Elkan, Needleman-Wunsch, Smith-Waterman and Soft TF/IDF do not have a <strong>get_sim_score</strong> method, because there is no straightforward way to normalize the raw scores of these measures into similarity scores in [0,1] (see the Developer Manual for further explanation).</p>
+</div>
+<div class="section" id="handling-a-large-number-of-string-pairs">
+<h2>Handling a Large Number of String Pairs<a class="headerlink" href="#handling-a-large-number-of-string-pairs" title="Permalink to this headline">¶</a></h2>
+<p>Steps 1-4 above discuss the case where you want to compute the similarity score of only a single string pair.</p>
+<p>There are however cases where you need to compute the similarity scores of many string pairs. For example, given a table A of 10K strings and a table B of 10K strings, you may need to compute the string similarity scores for all 100M string pairs in the Cartesian product of the two tables.</p>
+<p>In such cases, you should avoid tokenizing the same string repeatedly, such as calling jac.get_sim_score(ws_tok_set.tokenize(x), ws_tok_set.tokenize(y)) for all pairs (x,y) in the Cartesian product. If you do this, a string x in table A will be tokenized 10K times, since it will appear in 10K pairs. This is clearly unnecessary and very expensive.</p>
+<p>Instead, you should tokenize all strings in tables A and B only once, store the output of tokenizing in some Python structure, then call the similarity measure on these structures to compute similarity scores. This will avoid repeated tokenizing of the same strings.</p>
+</div>
+<div class="section" id="handling-missing-values">
+<h2>Handling Missing Values<a class="headerlink" href="#handling-missing-values" title="Permalink to this headline">¶</a></h2>
+<p>By “missing values” we mean cases where the values of one or more strings are missing (e.g., represented as None or NaN in Python). For example, given a row “David,,36” in a CSV file, the value of the second cell of this row is missing. So when this file is read into a data frame, the corresponding cell in the data frame will have the value NaN. Note that missing values are different from empty string values, which are represented as “”.</p>
+<p>Handling missing values is tricky and application dependent (see the Developer Manual for a detailed discussion). For these reasons, the tokenizers and similarity measures in the package py_stringmatching do not handle missing values. If one of their input arguments is missing, they will stop, raising an error. Put differently, they expect non-missing input arguments.</p>
+</div>
+<div class="section" id="adding-prefix-and-suffix-to-the-input-string-for-qgram-tokenizers">
+<h2>Adding Prefix and Suffix to the Input String for Qgram Tokenizers<a class="headerlink" href="#adding-prefix-and-suffix-to-the-input-string-for-qgram-tokenizers" title="Permalink to this headline">¶</a></h2>
+<p>Consider computing a similarity score between two strings “mo” and “moo” using 3gram tokenizing followed by Jaccard scoring. Tokenizing “mo” returns an empty set, because “mo” contains no 3gram. Tokenizing “moo” returns the set {“moo”}. As a result, the Jaccard score between “mo” and “moo” is 0. This is somewhat counterintuitive, because the two strings are similar.</p>
+<p>To address such cases, in practice it is common to add a prefix of (q-1) characters (using #) and a suffix of (q-1) characters (using $) to the input string, before generating qgram tokens. For example, “moo” will be padded to be “##moo$$”, before tokenizing. The flag “padding” in qgram tokenizers can be set for this purpose (the default is True, in which case the string will be padded).</p>
+</div>
+<div class="section" id="class-hierarchy-for-tokenizers-and-similarity-measures">
+<h2>Class Hierarchy for Tokenizers and Similarity Measures<a class="headerlink" href="#class-hierarchy-for-tokenizers-and-similarity-measures" title="Permalink to this headline">¶</a></h2>
+<p>The current version implements the following class hierarchy for tokenizers:</p>
+<dl class="simple">
+<dt>Tokenizer</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>DefinitionTokenizer</dt><dd><ul>
+<li><p>AlphabeticTokenizer</p></li>
+<li><p>AlphanumericTokenizer</p></li>
+<li><p>QgramTokenizer</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>DelimiterTokenizer</dt><dd><ul>
+<li><p>WhitespaceTokenizer</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<p>The version implements the following class hierarchy for similarity measures:</p>
+<dl class="simple">
+<dt>SimilarityMeasure</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>SequenceSimilarityMeasure</dt><dd><ul>
+<li><p>Affine</p></li>
+<li><p>BagDistance</p></li>
+<li><p>Editex</p></li>
+<li><p>HammingDistance</p></li>
+<li><p>Jaro</p></li>
+<li><p>JaroWinkler</p></li>
+<li><p>Levenshtein</p></li>
+<li><p>NeedlemanWunsch</p></li>
+<li><p>PartialRatio</p></li>
+<li><p>PartialTokenSort</p></li>
+<li><p>Ratio</p></li>
+<li><p>SmithWaterman</p></li>
+<li><p>TokenSort</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>TokenSimilarityMeasure</dt><dd><ul>
+<li><p>Cosine</p></li>
+<li><p>Dice</p></li>
+<li><p>Jaccard</p></li>
+<li><p>OverlapCoefficient</p></li>
+<li><p>TfIdf</p></li>
+<li><p>TverskyIndex</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>HybridSimilarityMeasure</dt><dd><ul>
+<li><p>GeneralizedJaccard</p></li>
+<li><p>MongeElkan</p></li>
+<li><p>SoftTfIdf</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>PhoneticSimilarityMeasure</dt><dd><ul>
+<li><p>Soundex</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p>AnHai Doan, Alon Halevy, Zachary Ives, “Principles of Data Integration”, Morgan Kaufmann, 2012. Chapter 4 “String Matching” (available on the package’s homepage).</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Tokenizer.html" class="btn btn-neutral float-right" title="Tokenizers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016, py_stringmatching Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

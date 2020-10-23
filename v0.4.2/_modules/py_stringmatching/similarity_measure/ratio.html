@@ -1,0 +1,312 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>py_stringmatching.similarity_measure.ratio &mdash; py_stringmatching 0.4.2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> py_stringmatching
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../WhatIsNew.html">What is New?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Tokenizer.html">Tokenizers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SimilarityMeasure.html">Similarity Measures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Benchmark.html">Runtime Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Contributing.html">Contributing to py_stringmatching</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">py_stringmatching</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>py_stringmatching.similarity_measure.ratio</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for py_stringmatching.similarity_measure.ratio</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Fuzzy Wuzzy Ratio Similarity Measure&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+
+<span class="kn">from</span> <span class="nn">difflib</span> <span class="kn">import</span> <span class="n">SequenceMatcher</span>
+<span class="kn">from</span> <span class="nn">py_stringmatching</span> <span class="kn">import</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">py_stringmatching.similarity_measure.sequence_similarity_measure</span> <span class="kn">import</span> \
+                                                    <span class="n">SequenceSimilarityMeasure</span>
+
+
+<div class="viewcode-block" id="Ratio"><a class="viewcode-back" href="../../../Ratio.html#py_stringmatching.similarity_measure.ratio.Ratio">[docs]</a><span class="k">class</span> <span class="nc">Ratio</span><span class="p">(</span><span class="n">SequenceSimilarityMeasure</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computes Fuzzy Wuzzy ratio similarity measure.</span>
+
+<span class="sd">    Fuzzy Wuzzy ratio raw score is a measure of the strings similarity as an int in the</span>
+<span class="sd">    range [0, 100]. For two strings X and Y, the score is defined by </span>
+<span class="sd">    int(round((2.0 * M / T) * 100)) where T is the total number of characters in </span>
+<span class="sd">    both strings, and M is the number of matches in the two strings. Fuzzy Wuzzy ratio</span>
+<span class="sd">    sim score is a float in the range [0, 1] and is obtained by dividing the raw score</span>
+<span class="sd">    by 100.</span>
+<span class="sd">        </span>
+<span class="sd">     Note:</span>
+<span class="sd">         In the case where either of strings X or Y are empty, we define the</span>
+<span class="sd">         Fuzzy Wuzzy ratio similarity score to be 0. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="Ratio.get_raw_score"><a class="viewcode-back" href="../../../Ratio.html#py_stringmatching.similarity_measure.ratio.Ratio.get_raw_score">[docs]</a>    <span class="k">def</span> <span class="nf">get_raw_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string1</span><span class="p">,</span> <span class="n">string2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the Fuzzy Wuzzy ratio measure raw score between two strings.</span>
+<span class="sd">        This score is in the range [0,100].</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            string1,string2 (str): Input strings</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Ratio measure raw score (int) is returned</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: If the inputs are not strings</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; s = Ratio()</span>
+<span class="sd">            &gt;&gt;&gt; s.get_raw_score(&#39;Robert&#39;, &#39;Rupert&#39;)</span>
+<span class="sd">            67</span>
+<span class="sd">            &gt;&gt;&gt; s.get_raw_score(&#39;Sue&#39;, &#39;sue&#39;)</span>
+<span class="sd">            67</span>
+<span class="sd">            &gt;&gt;&gt; s.get_raw_score(&#39;example&#39;, &#39;samples&#39;)</span>
+<span class="sd">            71</span>
+
+<span class="sd">        References:</span>
+<span class="sd">            * https://pypi.python.org/pypi/fuzzywuzzy</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># input validations</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">sim_check_for_none</span><span class="p">(</span><span class="n">string1</span><span class="p">,</span> <span class="n">string2</span><span class="p">)</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">sim_check_for_string_inputs</span><span class="p">(</span><span class="n">string1</span><span class="p">,</span> <span class="n">string2</span><span class="p">)</span>
+
+        <span class="c1"># if one of the strings is empty return 0</span>
+        <span class="k">if</span> <span class="n">utils</span><span class="o">.</span><span class="n">sim_check_for_empty</span><span class="p">(</span><span class="n">string1</span><span class="p">,</span> <span class="n">string2</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="n">string1</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">convert_to_unicode</span><span class="p">(</span><span class="n">string1</span><span class="p">)</span>
+        <span class="n">string2</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">convert_to_unicode</span><span class="p">(</span><span class="n">string2</span><span class="p">)</span>
+
+        <span class="n">sm</span> <span class="o">=</span> <span class="n">SequenceMatcher</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">string1</span><span class="p">,</span> <span class="n">string2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">sm</span><span class="o">.</span><span class="n">ratio</span><span class="p">()))</span></div>
+
+<div class="viewcode-block" id="Ratio.get_sim_score"><a class="viewcode-back" href="../../../Ratio.html#py_stringmatching.similarity_measure.ratio.Ratio.get_sim_score">[docs]</a>    <span class="k">def</span> <span class="nf">get_sim_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string1</span><span class="p">,</span> <span class="n">string2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the Fuzzy Wuzzy ratio similarity score between two strings.</span>
+<span class="sd">        This score is in the range [0,1].</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            string1,string2 (str): Input strings</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Ratio measure similarity score (float) is returned</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: If the inputs are not strings</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; s = Ratio()</span>
+<span class="sd">            &gt;&gt;&gt; s.get_sim_score(&#39;Robert&#39;, &#39;Rupert&#39;)</span>
+<span class="sd">            0.67</span>
+<span class="sd">            &gt;&gt;&gt; s.get_sim_score(&#39;Sue&#39;, &#39;sue&#39;)</span>
+<span class="sd">            0.67</span>
+<span class="sd">            &gt;&gt;&gt; s.get_sim_score(&#39;example&#39;, &#39;samples&#39;)</span>
+<span class="sd">            0.71</span>
+
+<span class="sd">        References:</span>
+<span class="sd">            * https://pypi.python.org/pypi/fuzzywuzzy</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># input validations</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">sim_check_for_none</span><span class="p">(</span><span class="n">string1</span><span class="p">,</span> <span class="n">string2</span><span class="p">)</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">sim_check_for_string_inputs</span><span class="p">(</span><span class="n">string1</span><span class="p">,</span> <span class="n">string2</span><span class="p">)</span>
+
+        <span class="c1"># if one of the strings is empty return 0</span>
+        <span class="k">if</span> <span class="n">utils</span><span class="o">.</span><span class="n">sim_check_for_empty</span><span class="p">(</span><span class="n">string1</span><span class="p">,</span> <span class="n">string2</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="n">raw_score</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_raw_score</span><span class="p">(</span><span class="n">string1</span><span class="p">,</span> <span class="n">string2</span><span class="p">)</span>
+        <span class="n">sim_score</span> <span class="o">=</span> <span class="n">raw_score</span> <span class="o">/</span> <span class="mi">100</span>
+        <span class="k">return</span> <span class="n">sim_score</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016, py_stringmatching Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

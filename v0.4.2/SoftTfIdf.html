@@ -1,0 +1,400 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Soft TF/IDF &mdash; py_stringmatching 0.4.2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Soundex" href="Soundex.html" />
+    <link rel="prev" title="Smith Waterman" href="SmithWaterman.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> py_stringmatching
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="WhatIsNew.html">What is New?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tokenizer.html">Tokenizers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="SimilarityMeasure.html">Similarity Measures</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Affine.html">Affine Gap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BagDistance.html">Bag Distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Cosine.html">Cosine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Dice.html">Dice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Editex.html">Editex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GeneralizedJaccard.html">Generalized Jaccard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HammingDistance.html">Hamming Distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Jaccard.html">Jaccard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Jaro.html">Jaro</a></li>
+<li class="toctree-l2"><a class="reference internal" href="JaroWinkler.html">Jaro Winkler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Levenshtein.html">Levenshtein</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MongeElkan.html">Monge Elkan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NeedlemanWunsch.html">Needleman Wunsch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="OverlapCoefficient.html">Overlap Coefficient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PartialRatio.html">Partial Ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PartialTokenSort.html">Partial Token Sort</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Ratio.html">Ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SmithWaterman.html">Smith Waterman</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Soft TF/IDF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Soundex.html">Soundex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TfIdf.html">TF/IDF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TokenSort.html">Token Sort</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TverskyIndex.html">Tversky Index</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Benchmark.html">Runtime Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Contributing.html">Contributing to py_stringmatching</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">py_stringmatching</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="SimilarityMeasure.html">Similarity Measures</a> &raquo;</li>
+        
+      <li>Soft TF/IDF</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/SoftTfIdf.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="soft-tf-idf">
+<h1>Soft TF/IDF<a class="headerlink" href="#soft-tf-idf" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="py_stringmatching.similarity_measure.soft_tfidf.SoftTfIdf">
+<em class="property">class </em><code class="sig-prename descclassname">py_stringmatching.similarity_measure.soft_tfidf.</code><code class="sig-name descname">SoftTfIdf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">corpus_list</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sim_func</span><span class="o">=</span><span class="default_value">jaro_function</span></em>, <em class="sig-param"><span class="n">threshold</span><span class="o">=</span><span class="default_value">0.5</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/soft_tfidf.html#SoftTfIdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.soft_tfidf.SoftTfIdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes soft TF/IDF measure.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Currently, this measure is implemented without dampening. This is similar to setting dampen flag to be False in TF-IDF.
+We plan to add the dampen flag in the next release.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>corpus_list</strong> (<em>list of lists</em>) – Corpus list (default is set to None) of strings. If set to None,
+the input list are considered the only corpus.</p></li>
+<li><p><strong>sim_func</strong> (<em>function</em>) – Secondary similarity function. This should return a similarity score between two strings (optional),
+default is the Jaro similarity measure.</p></li>
+<li><p><strong>threshold</strong> (<em>float</em>) – Threshold value for the secondary similarity function (defaults to 0.5). If the similarity
+of a token pair exceeds the threshold, then the token pair is considered a match.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="py_stringmatching.similarity_measure.soft_tfidf.SoftTfIdf.sim_func">
+<code class="sig-name descname">sim_func</code><a class="headerlink" href="#py_stringmatching.similarity_measure.soft_tfidf.SoftTfIdf.sim_func" title="Permalink to this definition">¶</a></dt>
+<dd><p>An attribute to store the secondary similarity function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>function</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="py_stringmatching.similarity_measure.soft_tfidf.SoftTfIdf.threshold">
+<code class="sig-name descname">threshold</code><a class="headerlink" href="#py_stringmatching.similarity_measure.soft_tfidf.SoftTfIdf.threshold" title="Permalink to this definition">¶</a></dt>
+<dd><p>An attribute to store the threshold value for the secondary similarity function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="py_stringmatching.similarity_measure.soft_tfidf.SoftTfIdf.get_corpus_list">
+<code class="sig-name descname">get_corpus_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/soft_tfidf.html#SoftTfIdf.get_corpus_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.soft_tfidf.SoftTfIdf.get_corpus_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get corpus list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>corpus list (list of lists).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="py_stringmatching.similarity_measure.soft_tfidf.SoftTfIdf.get_raw_score">
+<code class="sig-name descname">get_raw_score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bag1</span></em>, <em class="sig-param"><span class="n">bag2</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/soft_tfidf.html#SoftTfIdf.get_raw_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.soft_tfidf.SoftTfIdf.get_raw_score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the raw soft TF/IDF score between two lists given the corpus information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bag1</strong> (<em>list</em>) – Input lists</p></li>
+<li><p><strong>bag2</strong> (<em>list</em>) – Input lists</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Soft TF/IDF score between the input lists (float).</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>TypeError</strong> – If the inputs are not lists or if one of the inputs is None.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">soft_tfidf</span> <span class="o">=</span> <span class="n">SoftTfIdf</span><span class="p">([[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]],</span> <span class="n">sim_func</span><span class="o">=</span><span class="n">Jaro</span><span class="p">()</span><span class="o">.</span><span class="n">get_raw_score</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">soft_tfidf</span><span class="o">.</span><span class="n">get_raw_score</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">])</span>
+<span class="go">0.17541160386140586</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">soft_tfidf</span> <span class="o">=</span> <span class="n">SoftTfIdf</span><span class="p">([[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]],</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">soft_tfidf</span><span class="o">.</span><span class="n">get_raw_score</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">])</span>
+<span class="go">0.5547001962252291</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">soft_tfidf</span> <span class="o">=</span> <span class="n">SoftTfIdf</span><span class="p">([[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;w&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;q&#39;</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">soft_tfidf</span><span class="o">.</span><span class="n">get_raw_score</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">])</span>
+<span class="go">0.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">soft_tfidf</span> <span class="o">=</span> <span class="n">SoftTfIdf</span><span class="p">(</span><span class="n">sim_func</span><span class="o">=</span><span class="n">Affine</span><span class="p">()</span><span class="o">.</span><span class="n">get_raw_score</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">soft_tfidf</span><span class="o">.</span><span class="n">get_raw_score</span><span class="p">([</span><span class="s1">&#39;aa&#39;</span><span class="p">,</span> <span class="s1">&#39;bb&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;ab&#39;</span><span class="p">,</span> <span class="s1">&#39;ba&#39;</span><span class="p">])</span>
+<span class="go">0.81649658092772592</span>
+</pre></div>
+</div>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><p>the string matching chapter of the “Principles of Data Integration” book.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt id="py_stringmatching.similarity_measure.soft_tfidf.SoftTfIdf.get_sim_func">
+<code class="sig-name descname">get_sim_func</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/soft_tfidf.html#SoftTfIdf.get_sim_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.soft_tfidf.SoftTfIdf.get_sim_func" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get secondary similarity function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>secondary similarity function (function).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="py_stringmatching.similarity_measure.soft_tfidf.SoftTfIdf.get_threshold">
+<code class="sig-name descname">get_threshold</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/soft_tfidf.html#SoftTfIdf.get_threshold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.soft_tfidf.SoftTfIdf.get_threshold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get threshold used for the secondary similarity function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>threshold (float).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="py_stringmatching.similarity_measure.soft_tfidf.SoftTfIdf.set_corpus_list">
+<code class="sig-name descname">set_corpus_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">corpus_list</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/soft_tfidf.html#SoftTfIdf.set_corpus_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.soft_tfidf.SoftTfIdf.set_corpus_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set corpus list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>corpus_list</strong> (<em>list of lists</em>) – Corpus list.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="py_stringmatching.similarity_measure.soft_tfidf.SoftTfIdf.set_sim_func">
+<code class="sig-name descname">set_sim_func</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sim_func</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/soft_tfidf.html#SoftTfIdf.set_sim_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.soft_tfidf.SoftTfIdf.set_sim_func" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set secondary similarity function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sim_func</strong> (<em>function</em>) – Secondary similarity function.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="py_stringmatching.similarity_measure.soft_tfidf.SoftTfIdf.set_threshold">
+<code class="sig-name descname">set_threshold</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">threshold</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/soft_tfidf.html#SoftTfIdf.set_threshold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.soft_tfidf.SoftTfIdf.set_threshold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set threshold value for the secondary similarity function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>threshold</strong> (<em>float</em>) – threshold value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Soundex.html" class="btn btn-neutral float-right" title="Soundex" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="SmithWaterman.html" class="btn btn-neutral float-left" title="Smith Waterman" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016, py_stringmatching Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

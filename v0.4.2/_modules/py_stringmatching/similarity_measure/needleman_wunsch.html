@@ -1,0 +1,313 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>py_stringmatching.similarity_measure.needleman_wunsch &mdash; py_stringmatching 0.4.2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> py_stringmatching
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../WhatIsNew.html">What is New?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Tokenizer.html">Tokenizers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SimilarityMeasure.html">Similarity Measures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Benchmark.html">Runtime Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Contributing.html">Contributing to py_stringmatching</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">py_stringmatching</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>py_stringmatching.similarity_measure.needleman_wunsch</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for py_stringmatching.similarity_measure.needleman_wunsch</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">py_stringmatching</span> <span class="kn">import</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">six.moves</span> <span class="kn">import</span> <span class="n">xrange</span>
+<span class="kn">from</span> <span class="nn">py_stringmatching.similarity_measure.sequence_similarity_measure</span> <span class="kn">import</span> \
+                                                    <span class="n">SequenceSimilarityMeasure</span>
+<span class="kn">from</span> <span class="nn">py_stringmatching.similarity_measure.cython.cython_needleman_wunsch</span> <span class="kn">import</span> <span class="n">needleman_wunsch</span>
+<span class="kn">from</span> <span class="nn">py_stringmatching.similarity_measure.cython.cython_utils</span> <span class="kn">import</span> <span class="n">cython_sim_ident</span>
+
+
+<div class="viewcode-block" id="NeedlemanWunsch"><a class="viewcode-back" href="../../../NeedlemanWunsch.html#py_stringmatching.similarity_measure.needleman_wunsch.NeedlemanWunsch">[docs]</a><span class="k">class</span> <span class="nc">NeedlemanWunsch</span><span class="p">(</span><span class="n">SequenceSimilarityMeasure</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computes Needleman-Wunsch measure.</span>
+
+<span class="sd">    The Needleman-Wunsch distance generalizes the Levenshtein distance and considers global alignment between two strings.</span>
+<span class="sd">    Specifically, it is computed by assigning a score to each alignment between the two input strings and choosing the</span>
+<span class="sd">    score of the best alignment, that is, the maximal score. An alignment between two strings is a set of correspondences</span>
+<span class="sd">    between their characters, allowing for gaps.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        gap_cost (float): Cost of gap (defaults to 1.0).</span>
+<span class="sd">        sim_func (function): Similarity function to give a score for each correspondence between the characters (defaults</span>
+<span class="sd">                             to an identity function, which returns 1 if the two characters are the same and 0 otherwise.  </span>
+<span class="sd">                             </span>
+<span class="sd">    Attributes:</span>
+<span class="sd">        gap_cost (float): An attribute to store the gap cost.</span>
+<span class="sd">        sim_func (function): An attribute to store the similarity function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gap_cost</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">sim_func</span><span class="o">=</span><span class="n">cython_sim_ident</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gap_cost</span> <span class="o">=</span> <span class="n">gap_cost</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sim_func</span> <span class="o">=</span> <span class="n">sim_func</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">NeedlemanWunsch</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="NeedlemanWunsch.get_raw_score"><a class="viewcode-back" href="../../../NeedlemanWunsch.html#py_stringmatching.similarity_measure.needleman_wunsch.NeedlemanWunsch.get_raw_score">[docs]</a>    <span class="k">def</span> <span class="nf">get_raw_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string1</span><span class="p">,</span> <span class="n">string2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Computes the raw Needleman-Wunsch score between two strings.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            string1,string2 (str) : Input strings.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Needleman-Wunsch similarity score (float).</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError : If the inputs are not strings or if one of the inputs is None.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; nw = NeedlemanWunsch()</span>
+<span class="sd">            &gt;&gt;&gt; nw.get_raw_score(&#39;dva&#39;, &#39;deeva&#39;)</span>
+<span class="sd">            1.0</span>
+<span class="sd">            &gt;&gt;&gt; nw = NeedlemanWunsch(gap_cost=0.0)</span>
+<span class="sd">            &gt;&gt;&gt; nw.get_raw_score(&#39;dva&#39;, &#39;deeve&#39;)</span>
+<span class="sd">            2.0</span>
+<span class="sd">            &gt;&gt;&gt; nw = NeedlemanWunsch(gap_cost=1.0, sim_func=lambda s1, s2 : (2.0 if s1 == s2 else -1.0))</span>
+<span class="sd">            &gt;&gt;&gt; nw.get_raw_score(&#39;dva&#39;, &#39;deeve&#39;)</span>
+<span class="sd">            1.0</span>
+<span class="sd">            &gt;&gt;&gt; nw = NeedlemanWunsch(gap_cost=0.5, sim_func=lambda s1, s2 : (1.0 if s1 == s2 else -1.0))</span>
+<span class="sd">            &gt;&gt;&gt; nw.get_raw_score(&#39;GCATGCUA&#39;, &#39;GATTACA&#39;)</span>
+<span class="sd">            2.5</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="c1"># input validations</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">sim_check_for_none</span><span class="p">(</span><span class="n">string1</span><span class="p">,</span> <span class="n">string2</span><span class="p">)</span>
+
+        <span class="c1"># convert input to unicode.</span>
+        <span class="n">string1</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">convert_to_unicode</span><span class="p">(</span><span class="n">string1</span><span class="p">)</span>
+        <span class="n">string2</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">convert_to_unicode</span><span class="p">(</span><span class="n">string2</span><span class="p">)</span>
+
+        <span class="n">utils</span><span class="o">.</span><span class="n">tok_check_for_string_input</span><span class="p">(</span><span class="n">string1</span><span class="p">,</span> <span class="n">string2</span><span class="p">)</span>
+
+        <span class="c1"># returns the similarity score from the cython function</span>
+        <span class="k">return</span> <span class="n">needleman_wunsch</span><span class="p">(</span><span class="n">string1</span><span class="p">,</span> <span class="n">string2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gap_cost</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim_func</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NeedlemanWunsch.get_gap_cost"><a class="viewcode-back" href="../../../NeedlemanWunsch.html#py_stringmatching.similarity_measure.needleman_wunsch.NeedlemanWunsch.get_gap_cost">[docs]</a>    <span class="k">def</span> <span class="nf">get_gap_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get gap cost.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Gap cost (float).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gap_cost</span></div>
+
+<div class="viewcode-block" id="NeedlemanWunsch.get_sim_func"><a class="viewcode-back" href="../../../NeedlemanWunsch.html#py_stringmatching.similarity_measure.needleman_wunsch.NeedlemanWunsch.get_sim_func">[docs]</a>    <span class="k">def</span> <span class="nf">get_sim_func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the similarity function.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            similarity function (function).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim_func</span></div>
+
+<div class="viewcode-block" id="NeedlemanWunsch.set_gap_cost"><a class="viewcode-back" href="../../../NeedlemanWunsch.html#py_stringmatching.similarity_measure.needleman_wunsch.NeedlemanWunsch.set_gap_cost">[docs]</a>    <span class="k">def</span> <span class="nf">set_gap_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gap_cost</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set gap cost.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            gap_cost (float): Cost of gap.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gap_cost</span> <span class="o">=</span> <span class="n">gap_cost</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="NeedlemanWunsch.set_sim_func"><a class="viewcode-back" href="../../../NeedlemanWunsch.html#py_stringmatching.similarity_measure.needleman_wunsch.NeedlemanWunsch.set_sim_func">[docs]</a>    <span class="k">def</span> <span class="nf">set_sim_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sim_func</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set similarity function.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            sim_func (function): Similarity function to give a score for the correspondence between characters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sim_func</span> <span class="o">=</span> <span class="n">sim_func</span>
+        <span class="k">return</span> <span class="kc">True</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016, py_stringmatching Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

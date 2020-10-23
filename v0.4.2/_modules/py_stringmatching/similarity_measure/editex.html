@@ -1,0 +1,478 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>py_stringmatching.similarity_measure.editex &mdash; py_stringmatching 0.4.2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> py_stringmatching
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../WhatIsNew.html">What is New?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Tokenizer.html">Tokenizers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SimilarityMeasure.html">Similarity Measures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Benchmark.html">Runtime Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Contributing.html">Contributing to py_stringmatching</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">py_stringmatching</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>py_stringmatching.similarity_measure.editex</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for py_stringmatching.similarity_measure.editex</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+<span class="sd">&quot;&quot;&quot;Editex distance measure&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">unicode_literals</span>
+<span class="kn">import</span> <span class="nn">unicodedata</span>
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">py_stringmatching</span> <span class="kn">import</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">six.moves</span> <span class="kn">import</span> <span class="n">xrange</span>
+<span class="kn">from</span> <span class="nn">six</span> <span class="kn">import</span> <span class="n">text_type</span>
+<span class="kn">from</span> <span class="nn">py_stringmatching.similarity_measure.sequence_similarity_measure</span> <span class="kn">import</span> \
+                                                    <span class="n">SequenceSimilarityMeasure</span>
+
+
+<div class="viewcode-block" id="Editex"><a class="viewcode-back" href="../../../Editex.html#py_stringmatching.similarity_measure.editex.Editex">[docs]</a><span class="k">class</span> <span class="nc">Editex</span><span class="p">(</span><span class="n">SequenceSimilarityMeasure</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Editex distance measure class.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        match_cost (int): Weight to give the correct char match, default=0</span>
+<span class="sd">        group_cost (int): Weight to give if the chars are in the same editex group, default=1</span>
+<span class="sd">        mismatch_cost (int): Weight to give the incorrect char match, default=2</span>
+<span class="sd">        local (boolean): Local variant on/off, default=False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">match_cost</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">group_cost</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">mismatch_cost</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                 <span class="n">local</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">match_cost</span> <span class="o">=</span> <span class="n">match_cost</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_cost</span> <span class="o">=</span> <span class="n">group_cost</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mismatch_cost</span> <span class="o">=</span> <span class="n">mismatch_cost</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">local</span> <span class="o">=</span> <span class="n">local</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Editex</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Editex.get_raw_score"><a class="viewcode-back" href="../../../Editex.html#py_stringmatching.similarity_measure.editex.Editex.get_raw_score">[docs]</a>    <span class="k">def</span> <span class="nf">get_raw_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string1</span><span class="p">,</span> <span class="n">string2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the editex distance between two strings.</span>
+
+<span class="sd">        As described on pages 3 &amp; 4 of</span>
+<span class="sd">        Zobel, Justin and Philip Dart. 1996. Phonetic string matching: Lessons from</span>
+<span class="sd">        information retrieval. In: Proceedings of the ACM-SIGIR Conference on</span>
+<span class="sd">        Research and Development in Information Retrieval, Zurich, Switzerland.</span>
+<span class="sd">        166–173. http://goanna.cs.rmit.edu.au/~jz/fulltext/sigir96.pdf</span>
+
+<span class="sd">        The local variant is based on</span>
+<span class="sd">        Ring, Nicholas and Alexandra L. Uitdenbogerd. 2009. Finding ‘Lucy in</span>
+<span class="sd">        Disguise’: The Misheard Lyric Matching Problem. In: Proceedings of the 5th</span>
+<span class="sd">        Asia Information Retrieval Symposium, Sapporo, Japan. 157-167.</span>
+<span class="sd">        http://www.seg.rmit.edu.au/research/download.php?manuscript=404</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            string1,string2 (str): Input strings</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Editex distance (int)</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError : If the inputs are not strings</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; ed = Editex()</span>
+<span class="sd">            &gt;&gt;&gt; ed.get_raw_score(&#39;cat&#39;, &#39;hat&#39;)</span>
+<span class="sd">            2</span>
+<span class="sd">            &gt;&gt;&gt; ed.get_raw_score(&#39;Niall&#39;, &#39;Neil&#39;)</span>
+<span class="sd">            2</span>
+<span class="sd">            &gt;&gt;&gt; ed.get_raw_score(&#39;aluminum&#39;, &#39;Catalan&#39;)</span>
+<span class="sd">            12</span>
+<span class="sd">            &gt;&gt;&gt; ed.get_raw_score(&#39;ATCG&#39;, &#39;TAGC&#39;)</span>
+<span class="sd">            6</span>
+
+<span class="sd">        References:</span>
+<span class="sd">            * Abydos Library - https://github.com/chrislit/abydos/blob/master/abydos/distance.py</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># input validations</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">sim_check_for_none</span><span class="p">(</span><span class="n">string1</span><span class="p">,</span> <span class="n">string2</span><span class="p">)</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">sim_check_for_string_inputs</span><span class="p">(</span><span class="n">string1</span><span class="p">,</span> <span class="n">string2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">utils</span><span class="o">.</span><span class="n">sim_check_for_exact_match</span><span class="p">(</span><span class="n">string1</span><span class="p">,</span> <span class="n">string2</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="c1"># convert both the strings to NFKD normalized unicode</span>
+        <span class="n">string1</span> <span class="o">=</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="s1">&#39;NFKD&#39;</span><span class="p">,</span> <span class="n">text_type</span><span class="p">(</span><span class="n">string1</span><span class="o">.</span><span class="n">upper</span><span class="p">()))</span>
+        <span class="n">string2</span> <span class="o">=</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="s1">&#39;NFKD&#39;</span><span class="p">,</span> <span class="n">text_type</span><span class="p">(</span><span class="n">string2</span><span class="o">.</span><span class="n">upper</span><span class="p">()))</span>
+
+        <span class="c1"># convert ß to SS (for Python2)</span>
+        <span class="n">string1</span> <span class="o">=</span> <span class="n">string1</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;ß&#39;</span><span class="p">,</span> <span class="s1">&#39;SS&#39;</span><span class="p">)</span>
+        <span class="n">string2</span> <span class="o">=</span> <span class="n">string2</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;ß&#39;</span><span class="p">,</span> <span class="s1">&#39;SS&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">string1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">string2</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">mismatch_cost</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">string2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">string1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">mismatch_cost</span>
+
+        <span class="n">d_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">string1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">string2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="n">len1</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">string1</span><span class="p">)</span>
+        <span class="n">len2</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">string2</span><span class="p">)</span>
+        <span class="n">string1</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">string1</span>
+        <span class="n">string2</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">string2</span>
+        <span class="n">editex_helper</span> <span class="o">=</span> <span class="n">EditexHelper</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">match_cost</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mismatch_cost</span><span class="p">,</span>
+                                     <span class="bp">self</span><span class="o">.</span><span class="n">group_cost</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">local</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">len1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">d_mat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">d_mat</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">editex_helper</span><span class="o">.</span><span class="n">d_cost</span><span class="p">(</span>
+                                                    <span class="n">string1</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">string1</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">len2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">d_mat</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">d_mat</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">editex_helper</span><span class="o">.</span><span class="n">d_cost</span><span class="p">(</span><span class="n">string2</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span>
+                                                                 <span class="n">string2</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">len1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">len2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">d_mat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">d_mat</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">editex_helper</span><span class="o">.</span><span class="n">d_cost</span><span class="p">(</span>
+                                                    <span class="n">string1</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">string1</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span>
+                                  <span class="n">d_mat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">editex_helper</span><span class="o">.</span><span class="n">d_cost</span><span class="p">(</span>
+                                                    <span class="n">string2</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">string2</span><span class="p">[</span><span class="n">j</span><span class="p">]),</span>
+                                  <span class="n">d_mat</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">editex_helper</span><span class="o">.</span><span class="n">r_cost</span><span class="p">(</span>
+                                                        <span class="n">string1</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">string2</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span>
+
+        <span class="k">return</span> <span class="n">d_mat</span><span class="p">[</span><span class="n">len1</span><span class="p">,</span> <span class="n">len2</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Editex.get_sim_score"><a class="viewcode-back" href="../../../Editex.html#py_stringmatching.similarity_measure.editex.Editex.get_sim_score">[docs]</a>    <span class="k">def</span> <span class="nf">get_sim_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string1</span><span class="p">,</span> <span class="n">string2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the normalized editex similarity between two strings.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            string1,string2 (str): Input strings</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Normalized editex similarity (float)</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError : If the inputs are not strings</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; ed = Editex()</span>
+<span class="sd">            &gt;&gt;&gt; ed.get_sim_score(&#39;cat&#39;, &#39;hat&#39;)</span>
+<span class="sd">            0.66666666666666674</span>
+<span class="sd">            &gt;&gt;&gt; ed.get_sim_score(&#39;Niall&#39;, &#39;Neil&#39;)</span>
+<span class="sd">            0.80000000000000004</span>
+<span class="sd">            &gt;&gt;&gt; ed.get_sim_score(&#39;aluminum&#39;, &#39;Catalan&#39;)</span>
+<span class="sd">            0.25</span>
+<span class="sd">            &gt;&gt;&gt; ed.get_sim_score(&#39;ATCG&#39;, &#39;TAGC&#39;)</span>
+<span class="sd">            0.25</span>
+
+<span class="sd">        References:</span>
+<span class="sd">            * Abydos Library - https://github.com/chrislit/abydos/blob/master/abydos/distance.py</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">raw_score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_raw_score</span><span class="p">(</span><span class="n">string1</span><span class="p">,</span> <span class="n">string2</span><span class="p">)</span>
+        <span class="n">string1_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">string1</span><span class="p">)</span>
+        <span class="n">string2_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">string2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">string1_len</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">string2_len</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">1.0</span>
+        <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">raw_score</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">string1_len</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">mismatch_cost</span><span class="p">,</span>
+                                    <span class="n">string2_len</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">mismatch_cost</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Editex.get_match_cost"><a class="viewcode-back" href="../../../Editex.html#py_stringmatching.similarity_measure.editex.Editex.get_match_cost">[docs]</a>    <span class="k">def</span> <span class="nf">get_match_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get match cost</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            match cost (int)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">match_cost</span></div>
+
+<div class="viewcode-block" id="Editex.get_group_cost"><a class="viewcode-back" href="../../../Editex.html#py_stringmatching.similarity_measure.editex.Editex.get_group_cost">[docs]</a>    <span class="k">def</span> <span class="nf">get_group_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get group cost</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            group cost (int)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_cost</span></div>
+
+<div class="viewcode-block" id="Editex.get_mismatch_cost"><a class="viewcode-back" href="../../../Editex.html#py_stringmatching.similarity_measure.editex.Editex.get_mismatch_cost">[docs]</a>    <span class="k">def</span> <span class="nf">get_mismatch_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get mismatch cost</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            mismatch cost (int)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mismatch_cost</span></div>
+
+<div class="viewcode-block" id="Editex.get_local"><a class="viewcode-back" href="../../../Editex.html#py_stringmatching.similarity_measure.editex.Editex.get_local">[docs]</a>    <span class="k">def</span> <span class="nf">get_local</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get local flag</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            local flag (boolean)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">local</span></div>
+
+<div class="viewcode-block" id="Editex.set_match_cost"><a class="viewcode-back" href="../../../Editex.html#py_stringmatching.similarity_measure.editex.Editex.set_match_cost">[docs]</a>    <span class="k">def</span> <span class="nf">set_match_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">match_cost</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set match cost</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            match_cost (int): Weight to give the correct char match</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">match_cost</span> <span class="o">=</span> <span class="n">match_cost</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Editex.set_group_cost"><a class="viewcode-back" href="../../../Editex.html#py_stringmatching.similarity_measure.editex.Editex.set_group_cost">[docs]</a>    <span class="k">def</span> <span class="nf">set_group_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_cost</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set group cost</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            group_cost (int): Weight to give if the chars are in the same editex group</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_cost</span> <span class="o">=</span> <span class="n">group_cost</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Editex.set_mismatch_cost"><a class="viewcode-back" href="../../../Editex.html#py_stringmatching.similarity_measure.editex.Editex.set_mismatch_cost">[docs]</a>    <span class="k">def</span> <span class="nf">set_mismatch_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mismatch_cost</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set mismatch cost</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            mismatch_cost (int): Weight to give the incorrect char match</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mismatch_cost</span> <span class="o">=</span> <span class="n">mismatch_cost</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Editex.set_local"><a class="viewcode-back" href="../../../Editex.html#py_stringmatching.similarity_measure.editex.Editex.set_local">[docs]</a>    <span class="k">def</span> <span class="nf">set_local</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set local flag</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            local (boolean): Local variant on/off</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">local</span> <span class="o">=</span> <span class="n">local</span>
+        <span class="k">return</span> <span class="kc">True</span></div></div>
+
+
+<span class="k">class</span> <span class="nc">EditexHelper</span><span class="p">:</span>
+    <span class="n">letter_groups</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;E&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;I&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;O&#39;</span><span class="p">]</span> \
+        <span class="o">=</span> <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;U&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;Y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;P&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;K&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;Q&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;D&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;T&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;L&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;R&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;M&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;N&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;G&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;J&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">6</span>
+    <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;F&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;P&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">7</span>
+    <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;S&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;Z&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">8</span>
+    <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;S&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">letter_groups</span><span class="p">[</span><span class="s1">&#39;J&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">9</span>
+    <span class="n">all_letters</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span><span class="s1">&#39;AEIOUYBPCKQDTLRMNGJFVSXZ&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">match_cost</span><span class="p">,</span> <span class="n">mismatch_cost</span><span class="p">,</span> <span class="n">group_cost</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">match_cost</span> <span class="o">=</span> <span class="n">match_cost</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mismatch_cost</span> <span class="o">=</span> <span class="n">mismatch_cost</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_cost</span> <span class="o">=</span> <span class="n">group_cost</span>
+
+    <span class="k">def</span> <span class="nf">r_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ch1</span><span class="p">,</span> <span class="n">ch2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return r(a,b) according to Zobel &amp; Dart&#39;s definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">ch1</span> <span class="o">==</span> <span class="n">ch2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">match_cost</span>
+        <span class="k">if</span> <span class="n">ch1</span> <span class="ow">in</span> <span class="n">EditexHelper</span><span class="o">.</span><span class="n">all_letters</span> <span class="ow">and</span> <span class="n">ch2</span> <span class="ow">in</span> <span class="n">EditexHelper</span><span class="o">.</span><span class="n">all_letters</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">EditexHelper</span><span class="o">.</span><span class="n">letter_groups</span><span class="p">[</span><span class="n">ch1</span><span class="p">]</span> <span class="o">==</span>
+                <span class="n">EditexHelper</span><span class="o">.</span><span class="n">letter_groups</span><span class="p">[</span><span class="n">ch2</span><span class="p">]):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_cost</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mismatch_cost</span>
+
+    <span class="k">def</span> <span class="nf">d_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ch1</span><span class="p">,</span> <span class="n">ch2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return d(a,b) according to Zobel &amp; Dart&#39;s definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">ch1</span> <span class="o">!=</span> <span class="n">ch2</span> <span class="ow">and</span> <span class="p">(</span><span class="n">ch1</span> <span class="o">==</span> <span class="s1">&#39;H&#39;</span> <span class="ow">or</span> <span class="n">ch1</span> <span class="o">==</span> <span class="s1">&#39;W&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_cost</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_cost</span><span class="p">(</span><span class="n">ch1</span><span class="p">,</span> <span class="n">ch2</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016, py_stringmatching Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

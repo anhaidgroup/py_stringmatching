@@ -1,0 +1,437 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Editex &mdash; py_stringmatching 0.4.2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Generalized Jaccard" href="GeneralizedJaccard.html" />
+    <link rel="prev" title="Dice" href="Dice.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> py_stringmatching
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="WhatIsNew.html">What is New?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tokenizer.html">Tokenizers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="SimilarityMeasure.html">Similarity Measures</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Affine.html">Affine Gap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BagDistance.html">Bag Distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Cosine.html">Cosine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Dice.html">Dice</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Editex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GeneralizedJaccard.html">Generalized Jaccard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HammingDistance.html">Hamming Distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Jaccard.html">Jaccard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Jaro.html">Jaro</a></li>
+<li class="toctree-l2"><a class="reference internal" href="JaroWinkler.html">Jaro Winkler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Levenshtein.html">Levenshtein</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MongeElkan.html">Monge Elkan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NeedlemanWunsch.html">Needleman Wunsch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="OverlapCoefficient.html">Overlap Coefficient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PartialRatio.html">Partial Ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PartialTokenSort.html">Partial Token Sort</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Ratio.html">Ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SmithWaterman.html">Smith Waterman</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SoftTfIdf.html">Soft TF/IDF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Soundex.html">Soundex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TfIdf.html">TF/IDF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TokenSort.html">Token Sort</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TverskyIndex.html">Tversky Index</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Benchmark.html">Runtime Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Contributing.html">Contributing to py_stringmatching</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">py_stringmatching</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="SimilarityMeasure.html">Similarity Measures</a> &raquo;</li>
+        
+      <li>Editex</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/Editex.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-py_stringmatching.similarity_measure.editex">
+<span id="editex"></span><h1>Editex<a class="headerlink" href="#module-py_stringmatching.similarity_measure.editex" title="Permalink to this headline">¶</a></h1>
+<p>Editex distance measure</p>
+<dl class="py class">
+<dt id="py_stringmatching.similarity_measure.editex.Editex">
+<em class="property">class </em><code class="sig-prename descclassname">py_stringmatching.similarity_measure.editex.</code><code class="sig-name descname">Editex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">match_cost</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">group_cost</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">mismatch_cost</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">local</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/editex.html#Editex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.editex.Editex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Editex distance measure class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>match_cost</strong> (<em>int</em>) – Weight to give the correct char match, default=0</p></li>
+<li><p><strong>group_cost</strong> (<em>int</em>) – Weight to give if the chars are in the same editex group, default=1</p></li>
+<li><p><strong>mismatch_cost</strong> (<em>int</em>) – Weight to give the incorrect char match, default=2</p></li>
+<li><p><strong>local</strong> (<em>boolean</em>) – Local variant on/off, default=False</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="py_stringmatching.similarity_measure.editex.Editex.get_group_cost">
+<code class="sig-name descname">get_group_cost</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/editex.html#Editex.get_group_cost"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.editex.Editex.get_group_cost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get group cost</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>group cost (int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="py_stringmatching.similarity_measure.editex.Editex.get_local">
+<code class="sig-name descname">get_local</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/editex.html#Editex.get_local"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.editex.Editex.get_local" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get local flag</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>local flag (boolean)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="py_stringmatching.similarity_measure.editex.Editex.get_match_cost">
+<code class="sig-name descname">get_match_cost</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/editex.html#Editex.get_match_cost"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.editex.Editex.get_match_cost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get match cost</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>match cost (int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="py_stringmatching.similarity_measure.editex.Editex.get_mismatch_cost">
+<code class="sig-name descname">get_mismatch_cost</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/editex.html#Editex.get_mismatch_cost"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.editex.Editex.get_mismatch_cost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get mismatch cost</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>mismatch cost (int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="py_stringmatching.similarity_measure.editex.Editex.get_raw_score">
+<code class="sig-name descname">get_raw_score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">string1</span></em>, <em class="sig-param"><span class="n">string2</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/editex.html#Editex.get_raw_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.editex.Editex.get_raw_score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the editex distance between two strings.</p>
+<p>As described on pages 3 &amp; 4 of
+Zobel, Justin and Philip Dart. 1996. Phonetic string matching: Lessons from
+information retrieval. In: Proceedings of the ACM-SIGIR Conference on
+Research and Development in Information Retrieval, Zurich, Switzerland.
+166–173. <a class="reference external" href="http://goanna.cs.rmit.edu.au/~jz/fulltext/sigir96.pdf">http://goanna.cs.rmit.edu.au/~jz/fulltext/sigir96.pdf</a></p>
+<p>The local variant is based on
+Ring, Nicholas and Alexandra L. Uitdenbogerd. 2009. Finding ‘Lucy in
+Disguise’: The Misheard Lyric Matching Problem. In: Proceedings of the 5th
+Asia Information Retrieval Symposium, Sapporo, Japan. 157-167.
+<a class="reference external" href="http://www.seg.rmit.edu.au/research/download.php?manuscript=404">http://www.seg.rmit.edu.au/research/download.php?manuscript=404</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>string1</strong> (<em>str</em>) – Input strings</p></li>
+<li><p><strong>string2</strong> (<em>str</em>) – Input strings</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Editex distance (int)</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>TypeError</strong> – If the inputs are not strings</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ed</span> <span class="o">=</span> <span class="n">Editex</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ed</span><span class="o">.</span><span class="n">get_raw_score</span><span class="p">(</span><span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;hat&#39;</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ed</span><span class="o">.</span><span class="n">get_raw_score</span><span class="p">(</span><span class="s1">&#39;Niall&#39;</span><span class="p">,</span> <span class="s1">&#39;Neil&#39;</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ed</span><span class="o">.</span><span class="n">get_raw_score</span><span class="p">(</span><span class="s1">&#39;aluminum&#39;</span><span class="p">,</span> <span class="s1">&#39;Catalan&#39;</span><span class="p">)</span>
+<span class="go">12</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ed</span><span class="o">.</span><span class="n">get_raw_score</span><span class="p">(</span><span class="s1">&#39;ATCG&#39;</span><span class="p">,</span> <span class="s1">&#39;TAGC&#39;</span><span class="p">)</span>
+<span class="go">6</span>
+</pre></div>
+</div>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><p>Abydos Library - <a class="reference external" href="https://github.com/chrislit/abydos/blob/master/abydos/distance.py">https://github.com/chrislit/abydos/blob/master/abydos/distance.py</a></p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt id="py_stringmatching.similarity_measure.editex.Editex.get_sim_score">
+<code class="sig-name descname">get_sim_score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">string1</span></em>, <em class="sig-param"><span class="n">string2</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/editex.html#Editex.get_sim_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.editex.Editex.get_sim_score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the normalized editex similarity between two strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>string1</strong> (<em>str</em>) – Input strings</p></li>
+<li><p><strong>string2</strong> (<em>str</em>) – Input strings</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Normalized editex similarity (float)</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>TypeError</strong> – If the inputs are not strings</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ed</span> <span class="o">=</span> <span class="n">Editex</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ed</span><span class="o">.</span><span class="n">get_sim_score</span><span class="p">(</span><span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;hat&#39;</span><span class="p">)</span>
+<span class="go">0.66666666666666674</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ed</span><span class="o">.</span><span class="n">get_sim_score</span><span class="p">(</span><span class="s1">&#39;Niall&#39;</span><span class="p">,</span> <span class="s1">&#39;Neil&#39;</span><span class="p">)</span>
+<span class="go">0.80000000000000004</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ed</span><span class="o">.</span><span class="n">get_sim_score</span><span class="p">(</span><span class="s1">&#39;aluminum&#39;</span><span class="p">,</span> <span class="s1">&#39;Catalan&#39;</span><span class="p">)</span>
+<span class="go">0.25</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ed</span><span class="o">.</span><span class="n">get_sim_score</span><span class="p">(</span><span class="s1">&#39;ATCG&#39;</span><span class="p">,</span> <span class="s1">&#39;TAGC&#39;</span><span class="p">)</span>
+<span class="go">0.25</span>
+</pre></div>
+</div>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><p>Abydos Library - <a class="reference external" href="https://github.com/chrislit/abydos/blob/master/abydos/distance.py">https://github.com/chrislit/abydos/blob/master/abydos/distance.py</a></p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt id="py_stringmatching.similarity_measure.editex.Editex.set_group_cost">
+<code class="sig-name descname">set_group_cost</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">group_cost</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/editex.html#Editex.set_group_cost"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.editex.Editex.set_group_cost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set group cost</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>group_cost</strong> (<em>int</em>) – Weight to give if the chars are in the same editex group</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="py_stringmatching.similarity_measure.editex.Editex.set_local">
+<code class="sig-name descname">set_local</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">local</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/editex.html#Editex.set_local"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.editex.Editex.set_local" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set local flag</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>local</strong> (<em>boolean</em>) – Local variant on/off</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="py_stringmatching.similarity_measure.editex.Editex.set_match_cost">
+<code class="sig-name descname">set_match_cost</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">match_cost</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/editex.html#Editex.set_match_cost"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.editex.Editex.set_match_cost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set match cost</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>match_cost</strong> (<em>int</em>) – Weight to give the correct char match</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="py_stringmatching.similarity_measure.editex.Editex.set_mismatch_cost">
+<code class="sig-name descname">set_mismatch_cost</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mismatch_cost</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/editex.html#Editex.set_mismatch_cost"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.editex.Editex.set_mismatch_cost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set mismatch cost</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mismatch_cost</strong> (<em>int</em>) – Weight to give the incorrect char match</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="GeneralizedJaccard.html" class="btn btn-neutral float-right" title="Generalized Jaccard" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Dice.html" class="btn btn-neutral float-left" title="Dice" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016, py_stringmatching Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

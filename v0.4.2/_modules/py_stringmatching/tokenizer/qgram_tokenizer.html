@@ -1,0 +1,444 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>py_stringmatching.tokenizer.qgram_tokenizer &mdash; py_stringmatching 0.4.2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> py_stringmatching
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../WhatIsNew.html">What is New?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Tokenizer.html">Tokenizers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SimilarityMeasure.html">Similarity Measures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Benchmark.html">Runtime Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Contributing.html">Contributing to py_stringmatching</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">py_stringmatching</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>py_stringmatching.tokenizer.qgram_tokenizer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for py_stringmatching.tokenizer.qgram_tokenizer</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">six</span> <span class="kn">import</span> <span class="n">string_types</span>
+<span class="kn">from</span> <span class="nn">six.moves</span> <span class="kn">import</span> <span class="n">xrange</span>
+
+<span class="kn">from</span> <span class="nn">py_stringmatching</span> <span class="kn">import</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">py_stringmatching.tokenizer.definition_tokenizer</span> <span class="kn">import</span> <span class="n">DefinitionTokenizer</span>
+
+
+<div class="viewcode-block" id="QgramTokenizer"><a class="viewcode-back" href="../../../QgramTokenizer.html#py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer">[docs]</a><span class="k">class</span> <span class="nc">QgramTokenizer</span><span class="p">(</span><span class="n">DefinitionTokenizer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns tokens that are sequences of q consecutive characters.</span>
+<span class="sd">    </span>
+<span class="sd">    A qgram of an input string s is a substring t (of s) which is a sequence of q consecutive characters. Qgrams are also known as</span>
+<span class="sd">    ngrams or kgrams. </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        qval (int): A value for q, that is, the qgram&#39;s length (defaults to 2).</span>
+<span class="sd">        return_set (boolean): A flag to indicate whether to return a set of</span>
+<span class="sd">                              tokens or a bag of tokens (defaults to False).</span>
+<span class="sd">        padding (boolean): A flag to indicate whether a prefix and a suffix should be added</span>
+<span class="sd">                           to the input string (defaults to True).</span>
+<span class="sd">        prefix_pad (str): A character (that is, a string of length 1 in Python) that should be replicated </span>
+<span class="sd">                          (qval-1) times and prepended to the input string, if padding was </span>
+<span class="sd">                          set to True (defaults to &#39;#&#39;).</span>
+<span class="sd">        suffix_pad (str): A character (that is, a string of length 1 in Python) that should be replicated </span>
+<span class="sd">                          (qval-1) times and appended to the input string, if padding was </span>
+<span class="sd">                          set to True (defaults to &#39;$&#39;).</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        qval (int): An attribute to store the q value.</span>
+<span class="sd">        return_set (boolean): An attribute to store the flag return_set.</span>
+<span class="sd">        padding (boolean): An attribute to store the padding flag.</span>
+<span class="sd">        prefix_pad (str): An attribute to store the prefix string that should be used for padding.</span>
+<span class="sd">        suffix_pad (str): An attribute to store the suffix string that should</span>
+<span class="sd">                          be used for padding.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qval</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                 <span class="n">padding</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">prefix_pad</span><span class="o">=</span><span class="s1">&#39;#&#39;</span><span class="p">,</span> <span class="n">suffix_pad</span><span class="o">=</span><span class="s1">&#39;$&#39;</span><span class="p">,</span>
+                 <span class="n">return_set</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">qval</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;qval cannot be less than 1&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qval</span> <span class="o">=</span> <span class="n">qval</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">padding</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s1">&#39;padding is expected to be boolean type&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">padding</span> <span class="o">=</span> <span class="n">padding</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prefix_pad</span><span class="p">,</span> <span class="n">string_types</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s1">&#39;prefix_pad is expected to be of type string&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">suffix_pad</span><span class="p">,</span> <span class="n">string_types</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s1">&#39;suffix_pad is expected to be of type string&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">prefix_pad</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;prefix_pad should have length equal to 1&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">suffix_pad</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;suffix_pad should have length equal to 1&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">prefix_pad</span> <span class="o">=</span> <span class="n">prefix_pad</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">suffix_pad</span> <span class="o">=</span> <span class="n">suffix_pad</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">QgramTokenizer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">return_set</span><span class="p">)</span>
+
+<div class="viewcode-block" id="QgramTokenizer.tokenize"><a class="viewcode-back" href="../../../QgramTokenizer.html#py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.tokenize">[docs]</a>    <span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_string</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Tokenizes input string into qgrams.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            input_string (str): The string to be tokenized. </span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A Python list, which is a set or a bag of qgrams, depending on whether return_set flag is True or False. </span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError : If the input is not a string</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; qg2_tok = QgramTokenizer()</span>
+<span class="sd">            &gt;&gt;&gt; qg2_tok.tokenize(&#39;database&#39;)</span>
+<span class="sd">            [&#39;#d&#39;, &#39;da&#39;, &#39;at&#39;, &#39;ta&#39;, &#39;ab&#39;, &#39;ba&#39;, &#39;as&#39;, &#39;se&#39;, &#39;e$&#39;]</span>
+<span class="sd">            &gt;&gt;&gt; qg2_tok.tokenize(&#39;a&#39;)</span>
+<span class="sd">            [&#39;#a&#39;, &#39;a$&#39;]</span>
+<span class="sd">            &gt;&gt;&gt; qg3_tok = QgramTokenizer(qval=3)</span>
+<span class="sd">            &gt;&gt;&gt; qg3_tok.tokenize(&#39;database&#39;)</span>
+<span class="sd">            [&#39;##d&#39;, &#39;#da&#39;, &#39;dat&#39;, &#39;ata&#39;, &#39;tab&#39;, &#39;aba&#39;, &#39;bas&#39;, &#39;ase&#39;, &#39;se$&#39;, &#39;e$$&#39;]</span>
+<span class="sd">            &gt;&gt;&gt; qg3_nopad = QgramTokenizer(padding=False)</span>
+<span class="sd">            &gt;&gt;&gt; qg3_nopad.tokenize(&#39;database&#39;)</span>
+<span class="sd">            [&#39;da&#39;, &#39;at&#39;, &#39;ta&#39;, &#39;ab&#39;, &#39;ba&#39;, &#39;as&#39;, &#39;se&#39;]</span>
+<span class="sd">            &gt;&gt;&gt; qg3_diffpads = QgramTokenizer(prefix_pad=&#39;^&#39;, suffix_pad=&#39;!&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; qg3_diffpads.tokenize(&#39;database&#39;)</span>
+<span class="sd">            [&#39;^d&#39;, &#39;da&#39;, &#39;at&#39;, &#39;ta&#39;, &#39;ab&#39;, &#39;ba&#39;, &#39;as&#39;, &#39;se&#39;, &#39;e!&#39;]</span>
+<span class="sd">                      </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">tok_check_for_none</span><span class="p">(</span><span class="n">input_string</span><span class="p">)</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">tok_check_for_string_input</span><span class="p">(</span><span class="n">input_string</span><span class="p">)</span>
+
+        <span class="n">qgram_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># If the padding flag is set to true, add q-1 &quot;prefix_pad&quot; characters</span>
+        <span class="c1"># in front of the input string and  add q-1 &quot;suffix_pad&quot; characters at</span>
+        <span class="c1"># the end of the input string.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">padding</span><span class="p">:</span>
+            <span class="n">input_string</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix_pad</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qval</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="n">input_string</span> \
+                           <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">suffix_pad</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qval</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_string</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">qval</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">qgram_list</span>
+
+        <span class="n">qgram_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">input_string</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">qval</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span>
+                      <span class="n">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">input_string</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qval</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))]</span>
+        <span class="n">qgram_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">qgram_list</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_set</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">utils</span><span class="o">.</span><span class="n">convert_bag_to_set</span><span class="p">(</span><span class="n">qgram_list</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">qgram_list</span></div>
+
+<div class="viewcode-block" id="QgramTokenizer.get_qval"><a class="viewcode-back" href="../../../QgramTokenizer.html#py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.get_qval">[docs]</a>    <span class="k">def</span> <span class="nf">get_qval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets the value of the qval attribute, which is the length of qgrams. </span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The value of the qval attribute. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">qval</span></div>
+
+<div class="viewcode-block" id="QgramTokenizer.set_qval"><a class="viewcode-back" href="../../../QgramTokenizer.html#py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.set_qval">[docs]</a>    <span class="k">def</span> <span class="nf">set_qval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qval</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets the value of the qval attribute. </span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            qval (int): A value for q (the length of qgrams). </span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            AssertionError : If qval is less than 1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">qval</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;qval cannot be less than 1&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qval</span> <span class="o">=</span> <span class="n">qval</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="QgramTokenizer.get_padding"><a class="viewcode-back" href="../../../QgramTokenizer.html#py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.get_padding">[docs]</a>    <span class="k">def</span> <span class="nf">get_padding</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the value of the padding flag. This flag determines whether the</span>
+<span class="sd">        padding should be done for the input strings or not.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The Boolean value of the padding flag.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">padding</span></div>
+
+<div class="viewcode-block" id="QgramTokenizer.set_padding"><a class="viewcode-back" href="../../../QgramTokenizer.html#py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.set_padding">[docs]</a>    <span class="k">def</span> <span class="nf">set_padding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">padding</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the value of the padding flag.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            padding (boolean): Flag to indicate whether padding should be</span>
+<span class="sd">                done or not.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The Boolean value of True is returned if the update was</span>
+<span class="sd">            successful.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            AssertionError: If the padding is not of type boolean</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">padding</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s1">&#39;padding is expected to be boolean type&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">padding</span> <span class="o">=</span> <span class="n">padding</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="QgramTokenizer.get_prefix_pad"><a class="viewcode-back" href="../../../QgramTokenizer.html#py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.get_prefix_pad">[docs]</a>    <span class="k">def</span> <span class="nf">get_prefix_pad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the value of the prefix pad.</span>
+
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The prefix pad string.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix_pad</span></div>
+
+<div class="viewcode-block" id="QgramTokenizer.set_prefix_pad"><a class="viewcode-back" href="../../../QgramTokenizer.html#py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.set_prefix_pad">[docs]</a>    <span class="k">def</span> <span class="nf">set_prefix_pad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix_pad</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the value of the prefix pad string.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            prefix_pad (str): String that should be prepended to the</span>
+<span class="sd">                input string before tokenization.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The Boolean value of True is returned if the update was</span>
+<span class="sd">            successful.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            AssertionError: If the prefix_pad is not of type string.</span>
+<span class="sd">            AssertionError: If the length of prefix_pad is not one.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prefix_pad</span><span class="p">,</span> <span class="n">string_types</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s1">&#39;prefix_pad is expected to be of type string&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">prefix_pad</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;prefix_pad should have length equal to 1&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prefix_pad</span> <span class="o">=</span> <span class="n">prefix_pad</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="QgramTokenizer.get_suffix_pad"><a class="viewcode-back" href="../../../QgramTokenizer.html#py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.get_suffix_pad">[docs]</a>    <span class="k">def</span> <span class="nf">get_suffix_pad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the value of the suffix pad.</span>
+
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The suffix pad string.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">suffix_pad</span></div>
+
+<div class="viewcode-block" id="QgramTokenizer.set_suffix_pad"><a class="viewcode-back" href="../../../QgramTokenizer.html#py_stringmatching.tokenizer.qgram_tokenizer.QgramTokenizer.set_suffix_pad">[docs]</a>    <span class="k">def</span> <span class="nf">set_suffix_pad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">suffix_pad</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the value of the suffix pad string.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            suffix_pad (str): String that should be appended to the</span>
+<span class="sd">                input string before tokenization.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The boolean value of True is returned if the update was</span>
+<span class="sd">            successful.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            AssertionError: If the suffix_pad is not of type string.</span>
+<span class="sd">            AssertionError: If the length of suffix_pad is not one.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">suffix_pad</span><span class="p">,</span> <span class="n">string_types</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s1">&#39;suffix_pad is expected to be of type string&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">suffix_pad</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;suffix_pad should have length equal to 1&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">suffix_pad</span> <span class="o">=</span> <span class="n">suffix_pad</span>
+        <span class="k">return</span> <span class="kc">True</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2016, py_stringmatching Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
