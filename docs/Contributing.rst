@@ -167,6 +167,7 @@ nor any existing python installation. It will install all of the basic dependenc
 other dependencies, you can install them as follows::
 
       conda install -n py_stringmatching_dev nose
+
 .. To install *all* py_stringmatching dependencies you can do the following::
 
 ..     conda install -n py_stringmatching_dev --file build_tools/requirements_all.txt
@@ -312,7 +313,7 @@ have ``sphinx`` and ``ipython`` installed.
 
 It is easiest to :ref:`create a development environment <contributing.dev_env>`, then install::
 
-      conda install -n py_stringmatching_dev sphinx ipython
+      conda install -n py_stringmatching_dev sphinx sphinx_rtd_theme ipython
 
 Building the documentation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~

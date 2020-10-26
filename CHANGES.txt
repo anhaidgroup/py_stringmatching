@@ -1,3 +1,12 @@
+v0.4.2 - 10/17/2020
+  * Bug fix: Made PartialRatio importable from py_stringmatching.
+  * Dropped support for Python 3.4.
+  * This is the last version of py_stringmatching that will support Python 2 and Python 3.5.
+
+v0.4.1 - 02/22/2019
+  * Cython version was updated. The package is now built with updated Cython version >= 0.27.3.
+  * Added support for Python 3.7 version and dropped Testing support for Python 3.3 version.
+
 v0.4.0 - 07/18/2017
   * Rewritten five similarity measures in Cython: Affine, Jaro, Jaro Winkler, Needleman Wunsch, and Smith Waterman.
   * Added benchmark scripts to measure the performance of similarity measures. 

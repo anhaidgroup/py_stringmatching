@@ -76,3 +76,6 @@ cythonize.dat
 
 garage/
 cover/
+
+# macOS
+.DS_Store
