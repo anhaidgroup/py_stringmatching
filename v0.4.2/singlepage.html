@@ -235,7 +235,7 @@
 <h3>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h3>
 <blockquote>
 <div><ul class="simple">
-<li><p>Python 2.7 or Python 3.5+</p></li>
+<li><p>Python 2.7, 3.5, 3.6, 3.7, or 3.8</p></li>
 <li><p>C or C++ compiler (parts of the package are in Cython for efficiency reasons, and you need C or C++ compiler to compile these parts)</p></li>
 </ul>
 </div></blockquote>
@@ -3519,7 +3519,7 @@ This score is in the range [0,1].</p>
 <p>Tversky index similarity measure</p>
 <dl class="py class">
 <dt id="py_stringmatching.similarity_measure.tversky_index.TverskyIndex">
-<em class="property">class </em><code class="sig-prename descclassname">py_stringmatching.similarity_measure.tversky_index.</code><code class="sig-name descname">TverskyIndex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">beta</span><span class="o">=</span><span class="default_value">0.5</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/tversky_index.html#TverskyIndex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.tversky_index.TverskyIndex" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">py_stringmatching.similarity_measure.tversky_index.</code><code class="sig-name descname">TverskyIndex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">beta</span><span class="o">=</span><span class="default_value">0.5</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/tversky_singlepage.html#TverskyIndex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.tversky_index.TverskyIndex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tversky index similarity measure class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -3531,7 +3531,7 @@ This score is in the range [0,1].</p>
 </dl>
 <dl class="py method">
 <dt id="py_stringmatching.similarity_measure.tversky_index.TverskyIndex.get_alpha">
-<code class="sig-name descname">get_alpha</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/tversky_index.html#TverskyIndex.get_alpha"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.tversky_index.TverskyIndex.get_alpha" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_alpha</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/tversky_singlepage.html#TverskyIndex.get_alpha"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.tversky_index.TverskyIndex.get_alpha" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get alpha</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -3542,7 +3542,7 @@ This score is in the range [0,1].</p>
 
 <dl class="py method">
 <dt id="py_stringmatching.similarity_measure.tversky_index.TverskyIndex.get_beta">
-<code class="sig-name descname">get_beta</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/tversky_index.html#TverskyIndex.get_beta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.tversky_index.TverskyIndex.get_beta" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_beta</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/tversky_singlepage.html#TverskyIndex.get_beta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.tversky_index.TverskyIndex.get_beta" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get beta</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -3553,7 +3553,7 @@ This score is in the range [0,1].</p>
 
 <dl class="py method">
 <dt id="py_stringmatching.similarity_measure.tversky_index.TverskyIndex.get_raw_score">
-<code class="sig-name descname">get_raw_score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">set1</span></em>, <em class="sig-param"><span class="n">set2</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/tversky_index.html#TverskyIndex.get_raw_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.tversky_index.TverskyIndex.get_raw_score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_raw_score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">set1</span></em>, <em class="sig-param"><span class="n">set2</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/tversky_singlepage.html#TverskyIndex.get_raw_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.tversky_index.TverskyIndex.get_raw_score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the Tversky index similarity between two sets.</p>
 <p>The Tversky index is an asymmetric similarity measure on sets that compares a variant to a prototype. The
 Tversky index can be seen as a generalization of Dice’s coefficient and Tanimoto coefficient.</p>
@@ -3594,7 +3594,7 @@ where, :math: lpha, eta &gt;=0</p>
 
 <dl class="py method">
 <dt id="py_stringmatching.similarity_measure.tversky_index.TverskyIndex.get_sim_score">
-<code class="sig-name descname">get_sim_score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">set1</span></em>, <em class="sig-param"><span class="n">set2</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/tversky_index.html#TverskyIndex.get_sim_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.tversky_index.TverskyIndex.get_sim_score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_sim_score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">set1</span></em>, <em class="sig-param"><span class="n">set2</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/tversky_singlepage.html#TverskyIndex.get_sim_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.tversky_index.TverskyIndex.get_sim_score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the normalized tversky index similarity between two sets.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -3630,7 +3630,7 @@ where, :math: lpha, eta &gt;=0</p>
 
 <dl class="py method">
 <dt id="py_stringmatching.similarity_measure.tversky_index.TverskyIndex.set_alpha">
-<code class="sig-name descname">set_alpha</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">alpha</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/tversky_index.html#TverskyIndex.set_alpha"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.tversky_index.TverskyIndex.set_alpha" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_alpha</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">alpha</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/tversky_singlepage.html#TverskyIndex.set_alpha"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.tversky_index.TverskyIndex.set_alpha" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set alpha</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -3641,7 +3641,7 @@ where, :math: lpha, eta &gt;=0</p>
 
 <dl class="py method">
 <dt id="py_stringmatching.similarity_measure.tversky_index.TverskyIndex.set_beta">
-<code class="sig-name descname">set_beta</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">beta</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/tversky_index.html#TverskyIndex.set_beta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.tversky_index.TverskyIndex.set_beta" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_beta</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">beta</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_stringmatching/similarity_measure/tversky_singlepage.html#TverskyIndex.set_beta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_stringmatching.similarity_measure.tversky_index.TverskyIndex.set_beta" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set beta</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
