@@ -4,7 +4,7 @@ Installation
  
 Requirements
 ------------
-    * Python 2.7 or Python 3.5+
+    * Python 2.7, 3.5, 3.6, 3.7, or 3.8
     * C or C++ compiler (parts of the package are in Cython for efficiency reasons, and you need C or C++ compiler to compile these parts) 
 
 .. note::
