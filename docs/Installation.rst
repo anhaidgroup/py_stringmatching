@@ -4,12 +4,8 @@ Installation
  
 Requirements
 ------------
-    * Python 2.7, 3.5, 3.6, 3.7, or 3.8
-    * C or C++ compiler (parts of the package are in Cython for efficiency reasons, and you need C or C++ compiler to compile these parts) 
-
-.. note::
-
-     py_stringmatching 0.4.2 will be the last version to support Python 2 and Python 3.5.
+    * Python 3.6, 3.7, 3.8, or 3.9
+    * C or C++ compiler (parts of the package are in Cython for efficiency reasons, and you need C or C++ compiler to compile these parts)
 
 Platforms
 ------------
@@ -17,7 +13,7 @@ py_stringmatching has been tested on Linux (Ubuntu with Kernel Version 3.13.0-40
 
 Dependencies
 ------------
-    * numpy 1.7.0 or higher; if using Python 2, numpy less than 1.17; if using Python 3.5, numpy less than 1.19
+    * numpy 1.7.0 or higher
     * six
 
 .. note::
@@ -53,3 +49,10 @@ Step 2: Unzip the package and execute the following command from the package roo
 
     For more information see the StackOverflow `link
     <http://stackoverflow.com/questions/14179941/how-to-install-python-packages-without-root-privileges>`_.
+
+.. note::
+
+    Building C files from source requires Cython version 0.29.23 or higher::
+    
+        pip install Cython>=0.29.23
+

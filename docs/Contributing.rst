@@ -203,17 +203,9 @@ At this point you can easily do an *in-place* install, as detailed in the next s
 Creating a Windows development environment
 ------------------------------------------
 
-To build on Windows, you need to have compilers installed to build the extensions. You will need to install the appropriate Visual Studio compilers, VS 2008 for Python 2.7, VS 2010 for 3.4, and VS 2015 for Python 3.5.
+To build on Windows, you need to have compilers installed to build the extensions. You will need to install the appropriate Visual Studio compilers; the most recent is VS 2019.
 
-For Python 2.7, you can install the ``mingw`` compiler which will work equivalently to VS 2008::
-
-      conda install -n py_stringmatching_dev libpython
-
-or use the `Microsoft Visual Studio VC++ compiler for Python <https://www.microsoft.com/en-us/download/details.aspx?id=44266>`__. Note that you have to check the ``x64`` box to install the ``x64`` extension building capability as this is not installed by default.
-
-For Python 3.4, you can download and install the `Windows 7.1 SDK <https://www.microsoft.com/en-us/download/details.aspx?id=8279>`__. Read the references below as there may be various gotchas during the installation.
-
-For Python 3.5, you can download and install the `Visual Studio 2015 Community Edition <https://www.visualstudio.com/en-us/downloads/visual-studio-2015-downloads-vs.aspx>`__.
+To obtain VS 2019, you can download and install the `Visual Studio 2019 Community Edition <https://visualstudio.microsoft.com/downloads/>`__.
 
 Here are some references and blogs:
 

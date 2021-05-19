@@ -9,6 +9,9 @@ matrix:
   - os: linux
     python: 3.8
     env: PYTHON_VERSION=3.8
+  - os: linux
+    python: 3.9
+    env: PYTHON_VERSION=3.9
 
   - os: osx
     language: generic
@@ -22,6 +25,10 @@ matrix:
     language: generic
     env:
     - PYTHON_VERSION=3.8
+  - os: osx
+    language: generic
+    env:
+    - PYTHON_VERSION=3.9
 
 before_install:
   - if [ "$TRAVIS_OS_NAME" == linux ]; then MINICONDAVERSION="Linux"; else MINICONDAVERSION="MacOSX"; fi
@@ -33,7 +40,7 @@ install:
   - conda create --yes -n py_stringmatching_test_env python=$PYTHON_VERSION
   - source activate py_stringmatching_test_env
   - python --version
-  - pip install numpy six nose Cython coveralls
+  - pip install numpy six nose Cython>=0.29.23 coveralls
   - python setup.py build_ext --inplace
 
 script:
