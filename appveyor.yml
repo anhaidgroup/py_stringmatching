@@ -23,7 +23,7 @@ install:
   - python -m pip install --upgrade pip
 
   # Install the build and runtime dependencies of the project.
-  - pip install setuptools numpy six nose cython wheel
+  - pip install setuptools numpy six nose cython>=0.29.23 wheel
 
   # Build the project
   - python setup.py build_ext --inplace

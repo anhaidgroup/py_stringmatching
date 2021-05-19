@@ -49,3 +49,10 @@ Step 2: Unzip the package and execute the following command from the package roo
 
     For more information see the StackOverflow `link
     <http://stackoverflow.com/questions/14179941/how-to-install-python-packages-without-root-privileges>`_.
+
+.. note::
+
+    Building C files from source requires Cython version 0.29.23 or higher::
+    
+        pip install Cython>=0.29.23
+

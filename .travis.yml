@@ -40,7 +40,7 @@ install:
   - conda create --yes -n py_stringmatching_test_env python=$PYTHON_VERSION
   - source activate py_stringmatching_test_env
   - python --version
-  - pip install numpy six nose Cython coveralls
+  - pip install numpy six nose Cython>=0.29.23 coveralls
   - python setup.py build_ext --inplace
 
 script:
