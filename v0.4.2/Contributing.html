@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Contributing to py_stringmatching &mdash; py_stringmatching 0.4.2 documentation</title>
   
@@ -13,10 +13,15 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
 
   
   
+
   
+  
+
   
 
   
@@ -26,11 +31,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -51,7 +55,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> py_stringmatching
+            <a href="index.html" class="icon icon-home"> py_stringmatching
           
 
           
@@ -175,6 +179,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -186,7 +192,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="_sources/Contributing.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -415,14 +421,8 @@ other dependencies, you can install them as follows:</p>
 </div>
 <div class="section" id="creating-a-windows-development-environment">
 <span id="contributing-windows"></span><h3><a class="toc-backref" href="#id9">Creating a Windows development environment</a><a class="headerlink" href="#creating-a-windows-development-environment" title="Permalink to this headline">¶</a></h3>
-<p>To build on Windows, you need to have compilers installed to build the extensions. You will need to install the appropriate Visual Studio compilers, VS 2008 for Python 2.7, VS 2010 for 3.4, and VS 2015 for Python 3.5.</p>
-<p>For Python 2.7, you can install the <code class="docutils literal notranslate"><span class="pre">mingw</span></code> compiler which will work equivalently to VS 2008:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">n</span> <span class="n">py_stringmatching_dev</span> <span class="n">libpython</span>
-</pre></div>
-</div>
-<p>or use the <a class="reference external" href="https://www.microsoft.com/en-us/download/details.aspx?id=44266">Microsoft Visual Studio VC++ compiler for Python</a>. Note that you have to check the <code class="docutils literal notranslate"><span class="pre">x64</span></code> box to install the <code class="docutils literal notranslate"><span class="pre">x64</span></code> extension building capability as this is not installed by default.</p>
-<p>For Python 3.4, you can download and install the <a class="reference external" href="https://www.microsoft.com/en-us/download/details.aspx?id=8279">Windows 7.1 SDK</a>. Read the references below as there may be various gotchas during the installation.</p>
-<p>For Python 3.5, you can download and install the <a class="reference external" href="https://www.visualstudio.com/en-us/downloads/visual-studio-2015-downloads-vs.aspx">Visual Studio 2015 Community Edition</a>.</p>
+<p>To build on Windows, you need to have compilers installed to build the extensions. You will need to install the appropriate Visual Studio compilers; the most recent is VS 2019.</p>
+<p>To obtain VS 2019, you can download and install the <a class="reference external" href="https://visualstudio.microsoft.com/downloads/">Visual Studio 2019 Community Edition</a>.</p>
 <p>Here are some references and blogs:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://blogs.msdn.microsoft.com/pythonengineering/2016/04/11/unable-to-find-vcvarsall-bat/">https://blogs.msdn.microsoft.com/pythonengineering/2016/04/11/unable-to-find-vcvarsall-bat/</a></p></li>
@@ -725,35 +725,28 @@ branch has not actually been merged.</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-      
-        <a href="Benchmark.html" class="btn btn-neutral float-left" title="Runtime Benchmark" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="Benchmark.html" class="btn btn-neutral float-left" title="Runtime Benchmark" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2016, py_stringmatching Team
+        &#169; Copyright 2016, py_stringmatching Team.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
