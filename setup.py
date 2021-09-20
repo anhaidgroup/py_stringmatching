@@ -133,7 +133,8 @@ if __name__ == "__main__":
             'six'
         ],
         setup_requires=[
-            'numpy >= 1.7.0'                                                   
+            'numpy >= 1.7.0',
+            "numpy < 1.20; python_version < '3.7'"
         ],
         ext_modules=extensions,
         cmdclass=cmdclass,
