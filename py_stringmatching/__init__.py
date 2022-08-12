@@ -29,4 +29,3 @@ from py_stringmatching.similarity_measure.tfidf import TfIdf
 from py_stringmatching.similarity_measure.tversky_index import TverskyIndex
 from py_stringmatching.similarity_measure.partial_ratio import PartialRatio
 from py_stringmatching.similarity_measure.qwertyex import QWERTYex
-
