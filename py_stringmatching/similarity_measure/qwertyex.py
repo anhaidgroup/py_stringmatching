@@ -64,9 +64,9 @@ class QWERTYex(SequenceSimilarityMeasure):
             >>> qd.get_raw_score('Niall', 'Neil')
             2
             >>> qd.get_raw_score('aluminum', 'Catalan')
-            12
+            9
             >>> qd.get_raw_score('ATCG', 'TAGC')
-            6
+            3
 
         References:
             * Abydos Library - https://github.com/chrislit/abydos/blob/master/abydos/distance.py
@@ -135,13 +135,13 @@ class QWERTYex(SequenceSimilarityMeasure):
         Examples:
             >>> qd = QWERTYex()
             >>> qd.get_sim_score('cat', 'hat')
-            0.66666666666666674
-            >>> ed.get_sim_score('Niall', 'Neil')
-            0.80000000000000004
+            0.6666666666666667
+            >>> qd.get_sim_score('Niall', 'Neil')
+            0.8
             >>> qd.get_sim_score('aluminum', 'Catalan')
-            0.25
+            0.4375
             >>> qd.get_sim_score('ATCG', 'TAGC')
-            0.25
+            0.625
 
         References:
             * Abydos Library - https://github.com/chrislit/abydos/blob/master/abydos/distance.py
@@ -232,46 +232,38 @@ class QWERTYex(SequenceSimilarityMeasure):
 
 
 class QWERTYexHelper:
-    letter_groups = dict()
-
-    # letter_groups['A'] = letter_groups['E'] = letter_groups['I'] = letter_groups['O'] \
-    #     = letter_groups['U'] = letter_groups['Y'] = 0
-    # letter_groups['B'] = letter_groups['P'] = 1
-    # letter_groups['C'] = letter_groups['K'] = letter_groups['Q'] = 2
-    # letter_groups['D'] = letter_groups['T'] = 3
-    # letter_groups['L'] = letter_groups['R'] = 4
-    # letter_groups['M'] = letter_groups['N'] = 5
-    # letter_groups['G'] = letter_groups['J'] = 6
-    # letter_groups['F'] = letter_groups['P'] = letter_groups['V'] = 7
-    # letter_groups['S'] = letter_groups['X'] = letter_groups['Z'] = 8
-    # letter_groups['C'] = letter_groups['S'] = letter_groups['J'] = 9
+    # QWERTY groups described on page 4 of
+    # Ahmad, Indrayana, Wibisono and Ijtihadie. 2017.
+    # Edit Distance Weighting Modification using Phonetic and Typographic Letter 
+    # Grouping over Homomorphic Encrypted Data. 
+    # In: International Conference on Science in Information Technology. 408-412.
+    # https://ieeexplore.ieee.org/abstract/document/8257147
     
-    letter_groups['A'] = {1, 10}
-    letter_groups['B'] = {14, 21, 22}
-    letter_groups['C'] = {12, 19, 20}
-    letter_groups['D'] = {3, 11, 12}
-    letter_groups['E'] = {2, 3}
-    letter_groups['F'] = {4, 12, 13}
-    letter_groups['G'] = {5, 13, 14}
-    letter_groups['H'] = {6, 14, 15}
-    letter_groups['I'] = {7, 8}
-    letter_groups['J'] = {7, 15, 16}
-    letter_groups['K'] = {8, 16, 17}
-    letter_groups['L'] = {9, 17}
-    letter_groups['M'] = {16, 23}
-    letter_groups['N'] = {15, 22, 23}
-    letter_groups['O'] = {8, 9}
-    letter_groups['P'] = {9}
-    letter_groups['Q'] = {1}
-    letter_groups['R'] = {3, 4}
-    letter_groups['S'] = {2, 10, 11}
-    letter_groups['T'] = {4, 5}
-    letter_groups['U'] = {6, 7}
-    letter_groups['V'] = {13, 20, 21}
-    letter_groups['W'] = {1, 2}
-    letter_groups['X'] = {11, 18, 19}
-    letter_groups['Y'] = {5, 6}
-    letter_groups['Z'] = {10, 18}
+    letter_groups = {
+        'QA', 'QW', 'AQ', 'AW', 'WQ', 'WA', # 1
+        'WS', 'WE', 'SW', 'SE', 'EW', 'ES', # 2
+        'ED', 'ER', 'DE', 'DR', 'RE', 'RD', # 3
+        'RF', 'RT', 'FR', 'FT', 'TR', 'TF', # 4
+        'TG', 'TY', 'GT', 'GY', 'YT', 'YG', # 5
+        'YH', 'YU', 'HY', 'HU', 'UY', 'UH', # 6
+        'UJ', 'UI', 'JU', 'JI', 'IU', 'IJ', # 7
+        'IK', 'IO', 'KI', 'KO', 'OI', 'OK', # 8
+        'OL', 'OP', 'LO', 'LP', 'PO', 'PL', # 8
+        'AZ', 'AS', 'ZA', 'ZS', 'SA', 'SZ', # 10
+        'SX', 'SD', 'DS', 'DX', 'XS', 'XD', # 11
+        'DC', 'ER', 'DE', 'DR', 'RE', 'RD', # 12
+        'FV', 'FG', 'VF', 'VG', 'GF', 'GV', # 13
+        'GB', 'GH', 'BG', 'BH', 'HG', 'HB', # 14
+        'HN', 'HJ', 'NH', 'NJ', 'JH', 'JN', # 15
+        'JM', 'JK', 'MJ', 'MK', 'KJ', 'JN', # 16
+        'KL', 'LK', # 17
+        'ZX', 'XZ', # 18
+        'XC', 'CX', # 19
+        'CV', 'VC', # 20
+        'VB', 'BV', # 21
+        'BN', 'NB', # 22
+        'NM', 'MN', # 23 
+    }
 
     all_letters = frozenset('AEIOUYBPCKQDTLRMNGJFVSXZ')
 
@@ -286,7 +278,7 @@ class QWERTYexHelper:
         if ch1 == ch2:
             return self.match_cost
         if ch1 in QWERTYexHelper.all_letters and ch2 in QWERTYexHelper.all_letters:
-            if len(QWERTYexHelper.letter_groups[ch1].intersection(QWERTYexHelper.letter_groups[ch2])) > 0:
+            if ch1 + ch2 in QWERTYexHelper.letter_groups:
                 return self.group_cost
         return self.mismatch_cost
 
