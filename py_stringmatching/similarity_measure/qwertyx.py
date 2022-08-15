@@ -15,7 +15,7 @@ from py_stringmatching.similarity_measure.sequence_similarity_measure import \
                                                     SequenceSimilarityMeasure
 
 
-class QWERTYex(SequenceSimilarityMeasure):
+class QWERTYx(SequenceSimilarityMeasure):
     """QWERTY typo distance measure class.
 
     Parameters:
@@ -30,7 +30,7 @@ class QWERTYex(SequenceSimilarityMeasure):
         self.group_cost = group_cost
         self.mismatch_cost = mismatch_cost
         self.local = local
-        super(QWERTYex, self).__init__()
+        super(QWERTYx, self).__init__()
 
     def get_raw_score(self, string1, string2):
         """
@@ -58,7 +58,7 @@ class QWERTYex(SequenceSimilarityMeasure):
             TypeError : If the inputs are not strings
 
         Examples:
-            >>> qd = QWERTYex()
+            >>> qd = QWERTYx()
             >>> qd.get_raw_score('cat', 'hat')
             2
             >>> qd.get_raw_score('Niall', 'Neil')
@@ -96,25 +96,25 @@ class QWERTYex(SequenceSimilarityMeasure):
         len2 = len(string2)
         string1 = ' ' + string1
         string2 = ' ' + string2
-        qwertyex_helper = QWERTYexHelper(self.match_cost, self.mismatch_cost,
+        qwertyx_helper = QWERTYxHelper(self.match_cost, self.mismatch_cost,
                                      self.group_cost)
 
         if not self.local:
             for i in xrange(1, len1 + 1):
-                d_mat[i, 0] = d_mat[i - 1, 0] + qwertyex_helper.d_cost(
+                d_mat[i, 0] = d_mat[i - 1, 0] + qwertyx_helper.d_cost(
                                                     string1[i - 1], string1[i])
 
         for j in xrange(1, len2 + 1):
-            d_mat[0, j] = d_mat[0, j - 1] + qwertyex_helper.d_cost(string2[j - 1],
+            d_mat[0, j] = d_mat[0, j - 1] + qwertyx_helper.d_cost(string2[j - 1],
                                                                  string2[j])
 
         for i in xrange(1, len1 + 1):
             for j in xrange(1, len2 + 1):
-                d_mat[i, j] = min(d_mat[i - 1, j] + qwertyex_helper.d_cost(
+                d_mat[i, j] = min(d_mat[i - 1, j] + qwertyx_helper.d_cost(
                                                     string1[i - 1], string1[i]),
-                                  d_mat[i, j - 1] + qwertyex_helper.d_cost(
+                                  d_mat[i, j - 1] + qwertyx_helper.d_cost(
                                                     string2[j - 1], string2[j]),
-                                  d_mat[i - 1, j - 1] + qwertyex_helper.r_cost(
+                                  d_mat[i - 1, j - 1] + qwertyx_helper.r_cost(
                                                         string1[i], string2[j]))
 
         return d_mat[len1, len2]
@@ -133,7 +133,7 @@ class QWERTYex(SequenceSimilarityMeasure):
             TypeError : If the inputs are not strings
 
         Examples:
-            >>> qd = QWERTYex()
+            >>> qd = QWERTYx()
             >>> qd.get_sim_score('cat', 'hat')
             0.6666666666666667
             >>> qd.get_sim_score('Niall', 'Neil')
@@ -231,7 +231,7 @@ class QWERTYex(SequenceSimilarityMeasure):
         return True
 
 
-class QWERTYexHelper:
+class QWERTYxHelper:
     # QWERTY groups described on page 4 of
     # Ahmad, Indrayana, Wibisono and Ijtihadie. 2017.
     # Edit Distance Weighting Modification using Phonetic and Typographic Letter 
@@ -277,8 +277,8 @@ class QWERTYexHelper:
         """
         if ch1 == ch2:
             return self.match_cost
-        if ch1 in QWERTYexHelper.all_letters and ch2 in QWERTYexHelper.all_letters:
-            if ch1 + ch2 in QWERTYexHelper.letter_groups:
+        if ch1 in QWERTYxHelper.all_letters and ch2 in QWERTYxHelper.all_letters:
+            if ch1 + ch2 in QWERTYxHelper.letter_groups:
                 return self.group_cost
         return self.mismatch_cost
 
