@@ -1,8 +1,6 @@
 # coding=utf-8
 """Editex distance measure"""
 
-from __future__ import division
-from __future__ import unicode_literals
 import unicodedata
 
 import numpy as np
