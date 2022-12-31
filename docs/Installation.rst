@@ -14,7 +14,6 @@ py_stringmatching has been tested on Linux (Ubuntu 22.04), OS X (Monterey 12), a
 Dependencies
 ------------
     * numpy 1.7.0 or higher
-    * six
 
 .. note::
 

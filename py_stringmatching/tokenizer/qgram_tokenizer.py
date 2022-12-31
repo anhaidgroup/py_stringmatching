@@ -1,6 +1,3 @@
-from six import string_types
-from six.moves import xrange
-
 from py_stringmatching import utils
 from py_stringmatching.tokenizer.definition_tokenizer import DefinitionTokenizer
 
@@ -44,9 +41,9 @@ class QgramTokenizer(DefinitionTokenizer):
             raise AssertionError('padding is expected to be boolean type')
         self.padding = padding
 
-        if not isinstance(prefix_pad, string_types):
+        if not isinstance(prefix_pad, str):
             raise AssertionError('prefix_pad is expected to be of type string')
-        if not isinstance(suffix_pad, string_types):
+        if not isinstance(suffix_pad, str):
             raise AssertionError('suffix_pad is expected to be of type string')
         if not len(prefix_pad) == 1:
             raise AssertionError("prefix_pad should have length equal to 1")
@@ -103,7 +100,7 @@ class QgramTokenizer(DefinitionTokenizer):
             return qgram_list
 
         qgram_list = [input_string[i:i + self.qval] for i in
-                      xrange(len(input_string) - (self.qval - 1))]
+                      range(len(input_string) - (self.qval - 1))]
         qgram_list = list(filter(None, qgram_list))
 
         if self.return_set:
@@ -193,7 +190,7 @@ class QgramTokenizer(DefinitionTokenizer):
             AssertionError: If the length of prefix_pad is not one.
 
         """
-        if not isinstance(prefix_pad, string_types):
+        if not isinstance(prefix_pad, str):
             raise AssertionError('prefix_pad is expected to be of type string')
         if not len(prefix_pad) == 1:
             raise AssertionError("prefix_pad should have length equal to 1")
@@ -228,7 +225,7 @@ class QgramTokenizer(DefinitionTokenizer):
             AssertionError: If the length of suffix_pad is not one.
 
         """
-        if not isinstance(suffix_pad, string_types):
+        if not isinstance(suffix_pad, str):
             raise AssertionError('suffix_pad is expected to be of type string')
         if not len(suffix_pad) == 1:
             raise AssertionError("suffix_pad should have length equal to 1")

@@ -2,7 +2,6 @@
 
 from py_stringmatching.similarity_measure.cython.cython_utils import cython_sim_ident
 from py_stringmatching import utils
-from six.moves import xrange
 from py_stringmatching.similarity_measure.sequence_similarity_measure import \
                                                     SequenceSimilarityMeasure
 from py_stringmatching.similarity_measure.cython.cython_smith_waterman import smith_waterman

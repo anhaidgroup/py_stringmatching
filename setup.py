@@ -130,7 +130,6 @@ if __name__ == "__main__":
         packages=packages,
         install_requires=[
             'numpy >= 1.7.0',
-            'six'
         ],
         setup_requires=[
             'numpy >= 1.7.0'                                                   
