@@ -20,7 +20,7 @@ def needleman_wunsch(unicode string1, unicode string2, float gap_cost,
     cdef double match = 0.0, delete = 0.0, insert = 0.0
     cdef double sim_func_score = 0.0
     cdef int len_s1 = len(string1), len_s2 = len(string2)
-    cdef double[:,:] dist_mat = np.zeros((len(string1) + 1, len(string2) + 1), dtype=np.float)
+    cdef double[:,:] dist_mat = np.zeros((len(string1) + 1, len(string2) + 1), dtype=float)
 
     # DP initialization
     for i from 0 <= i < (len_s1 + 1):
