@@ -1,5 +1,3 @@
-import numpy as np
-
 from py_stringmatching import utils
 from py_stringmatching.similarity_measure.sequence_similarity_measure import \
                                                     SequenceSimilarityMeasure

@@ -1,6 +1,4 @@
-import functools
 import re
-import sys
 
 """
 This module defines a list of utility and validation functions.

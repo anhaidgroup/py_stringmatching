@@ -2,7 +2,6 @@
 
 from __future__ import unicode_literals
 
-import math
 import unittest
 
 from py_stringmatching.similarity_measure.soundex import Soundex
