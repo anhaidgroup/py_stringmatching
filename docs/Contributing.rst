@@ -166,7 +166,7 @@ nor any existing python installation. It will install all of the basic dependenc
 *py_stringmatching*, as well as the development and testing tools. If you would like to install
 other dependencies, you can install them as follows::
 
-      conda install -n py_stringmatching_dev nose
+      conda install -n py_stringmatching_dev numpy
 
 .. To install *all* py_stringmatching dependencies you can do the following::
 
@@ -347,8 +347,8 @@ it is worth getting in the habit of writing tests ahead of time so this is never
 
 Unit testing
 ~~~~~~~~~~~~~
-Like many packages, *py_stringmatching* uses the `Nose testing system
-<http://nose.readthedocs.org/en/latest/index.html>`_.
+Like many packages, *py_stringmatching* uses the `standard ``unittest``
+testing library <https://docs.python.org/3/library/unittest.html>`_.
 
 All tests should go into the ``tests`` subdirectory of the specific package.
 This folder contains many current examples of tests, and we suggest looking to these for
@@ -357,7 +357,7 @@ inspiration.
 The tests can then be run directly inside your Git clone (without having to
 install *py_stringmatching*) by typing::
 
-    nosetests
+    python3 -m unittest
 
 
 Performance testing
