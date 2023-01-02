@@ -12,6 +12,12 @@ matrix:
   - os: linux
     python: 3.9
     env: PYTHON_VERSION=3.9
+  - os: linux
+    python: 3.10
+    env: PYTHON_VERSION=3.10
+  - os: linux
+    python: 3.11
+    env: PYTHON_VERSION=3.11
 
   - os: osx
     language: generic
@@ -29,6 +35,14 @@ matrix:
     language: generic
     env:
     - PYTHON_VERSION=3.9
+  - os: osx
+    language: generic
+    env:
+    - PYTHON_VERSION=3.10
+  - os: osx
+    language: generic
+    env:
+    - PYTHON_VERSION=3.11
 
 before_install:
   - if [ "$TRAVIS_OS_NAME" == linux ]; then MINICONDAVERSION="Linux"; else MINICONDAVERSION="MacOSX"; fi
