@@ -30,9 +30,6 @@ jobs:
           python --version
           pip install numpy six nose Cython>=0.29.23 coveralls
           python setup.py build_ext --inplace
-      - name: Coverage and nose
+      - name: Run tests
         run: |
-          coverage run -m nose
-          uname -a
-      - name: after success
-        run: coveralls
+          nosetests --with-coverage
