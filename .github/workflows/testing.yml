@@ -27,9 +27,8 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python --version
-          pip install numpy six nose Cython>=0.29.23 coveralls
+          pip install numpy six nose2 nose2[coverage_plugin] Cython>=0.29.23 coveralls
           python setup.py build_ext --inplace
       - name: Run tests
         run: |
-          nosetests --with-coverage
+          nose2 --with-coverage
