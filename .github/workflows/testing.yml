@@ -1,0 +1,36 @@
+# Testing on windows, linux, macos, for python versions 3.6, 3.7, 3.8, 3.9, 3.10
+
+name: Testing
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  build:
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
+        os: ["ubuntu-latest", "windows-latest", "macos-latest"]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python --version
+          pip install numpy six nose Cython>=0.29.23 coveralls
+          python setup.py build_ext --inplace
+      - name: Coverage and nose
+        run: |
+          coverage run -m nose
+          uname -a
+      - name: after success
+        run: coveralls
