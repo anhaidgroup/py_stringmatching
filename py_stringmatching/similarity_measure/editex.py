@@ -91,7 +91,7 @@ class Editex(SequenceSimilarityMeasure):
         if len(string2) == 0:
             return len(string1) * self.mismatch_cost
 
-        d_mat = np.zeros((len(string1) + 1, len(string2) + 1), dtype=np.int)
+        d_mat = np.zeros((len(string1) + 1, len(string2) + 1), dtype=int)
         len1 = len(string1)
         len2 = len(string2)
         string1 = ' ' + string1

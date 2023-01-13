@@ -8,7 +8,7 @@ from py_stringmatching.similarity_measure.cython.cython_utils import int_min_thr
 from numpy import int32
 from numpy cimport int32_t
 
-DTYPE = np.int
+DTYPE = int
 ctypedef np.int_t DTYPE_t
 
 @cython.boundscheck(False)
