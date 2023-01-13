@@ -5,9 +5,10 @@ from __future__ import unicode_literals
 import math
 import unittest
 
-from nose.tools import *
-
 from py_stringmatching.similarity_measure.soundex import Soundex
+
+from .utils import raises
+
 
 class SoundexTestCases(unittest.TestCase):
     def setUp(self):
