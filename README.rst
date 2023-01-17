@@ -26,4 +26,4 @@ Six, and a C or C++ compiler. For the development version, you will also need Cy
 Platforms
 =========
 
-py_stringmatching has been tested on Linux, OS X and Windows.
+py_stringmatching has been tested on Linux, OS X and Windows. At this time we have only tested on x86 architecture.
