@@ -1,3 +1,10 @@
+v0.4.3 - 2/8/2023
+  * Dropped support for Python 3.6.
+  * Added support for Python 3.10 and 3.11.
+  * Replaced aliases removed from Numpy 1.24.
+  * Switched from Nose to vanilla Unittest.
+  * Replaced Travis and Appveyor CI testing with Github Actions.
+
 v0.4.2 - 10/17/2020
   * Bug fix: Made PartialRatio importable from py_stringmatching.
   * Dropped support for Python 3.4.
