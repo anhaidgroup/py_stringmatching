@@ -1,4 +1,4 @@
-__version__ = "0.4.0"
+__version__ = "0.4.3"
 
 # Import tokenizers
 from py_stringmatching.tokenizer.alphabetic_tokenizer import AlphabeticTokenizer
