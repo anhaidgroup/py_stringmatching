@@ -1,13 +1,14 @@
 from __future__ import unicode_literals
 
 import unittest
-from nose.tools import *
 
 from py_stringmatching.tokenizer.alphabetic_tokenizer import AlphabeticTokenizer
 from py_stringmatching.tokenizer.alphanumeric_tokenizer import AlphanumericTokenizer
 from py_stringmatching.tokenizer.delimiter_tokenizer import DelimiterTokenizer
 from py_stringmatching.tokenizer.qgram_tokenizer import QgramTokenizer
 from py_stringmatching.tokenizer.whitespace_tokenizer import WhitespaceTokenizer
+
+from .utils import raises
 
 
 class QgramTokenizerTestCases(unittest.TestCase):

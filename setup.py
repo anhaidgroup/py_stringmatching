@@ -10,14 +10,13 @@ try:
 except ImportError:
     PIP_INSTALLED = False
 
-if not PIP_INSTALLED:
-    raise ImportError('pip is not installed.')
-
 def install_and_import(package):
     import importlib
     try:
         importlib.import_module(package)
     except ImportError:
+        if not PIP_INSTALLED:
+            raise ImportError('pip is not installed.')
         pip.main(['install', package])
     finally:
         globals()[package] = importlib.import_module(package)
@@ -123,6 +122,8 @@ if __name__ == "__main__":
             'Programming Language :: Python :: 3.7',
             'Programming Language :: Python :: 3.8',
             'Programming Language :: Python :: 3.9',
+            'Programming Language :: Python :: 3.10',
+            'Programming Language :: Python :: 3.11',
             'Topic :: Scientific/Engineering',
             'Topic :: Utilities',
             'Topic :: Software Development :: Libraries',

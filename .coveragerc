@@ -7,4 +7,3 @@ omit =
     */benchmarks/*
     *__init__*
     */python?.?/*
-    */site-packages/nose/*
