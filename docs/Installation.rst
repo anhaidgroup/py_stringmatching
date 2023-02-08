@@ -9,7 +9,7 @@ Requirements
 
 Platforms
 ------------
-py_stringmatching has been tested on Linux (Ubuntu with Kernel Version 3.13.0-40-generic), OS X (Darwin with Kernel Version 13.4.0), and Windows 8.1.
+py_stringmatching has been tested on Linux (Ubuntu 22.04), OS X (Monterey 12), and Windows 10.
 
 Dependencies
 ------------
