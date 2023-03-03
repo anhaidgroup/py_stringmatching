@@ -101,7 +101,7 @@ if __name__ == "__main__":
         version='0.4.3',
         description='Python library for string matching.',
         long_description=LONG_DESCRIPTION,
-        url='https://sites.google.com/site/anhaidgroup/projects/magellan/py_stringmatching',
+        url='https://github.com/anhaidgroup/py_stringmatching',
         author='UW Magellan Team',
         author_email='uwmagellan@gmail.com',
         license='BSD',
