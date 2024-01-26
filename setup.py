@@ -97,7 +97,7 @@ if __name__ == "__main__":
         LONG_DESCRIPTION = f.read()
 
     setuptools.setup(
-        name='py-stringmatching',
+        name='py_stringmatching',
         version='0.4.3',
         description='Python library for string matching.',
         long_description=LONG_DESCRIPTION,
