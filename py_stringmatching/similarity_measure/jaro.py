@@ -1,5 +1,4 @@
 from py_stringmatching import utils
-from six.moves import xrange
 from py_stringmatching.similarity_measure.sequence_similarity_measure import \
                                                     SequenceSimilarityMeasure
 from py_stringmatching.similarity_measure.cython.cython_jaro import jaro

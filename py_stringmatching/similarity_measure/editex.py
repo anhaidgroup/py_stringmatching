@@ -1,16 +1,11 @@
 # coding=utf-8
 """Editex distance measure"""
 
-from __future__ import division
-from __future__ import unicode_literals
 import unicodedata
-import six
 
 import numpy as np
 
 from py_stringmatching import utils
-from six.moves import xrange
-from six import text_type
 from py_stringmatching.similarity_measure.sequence_similarity_measure import \
                                                     SequenceSimilarityMeasure
 
@@ -79,8 +74,8 @@ class Editex(SequenceSimilarityMeasure):
             return 0
 
         # convert both the strings to NFKD normalized unicode
-        string1 = unicodedata.normalize('NFKD', text_type(string1.upper()))
-        string2 = unicodedata.normalize('NFKD', text_type(string2.upper()))
+        string1 = unicodedata.normalize('NFKD', string1.upper())
+        string2 = unicodedata.normalize('NFKD', string2.upper())
 
         # convert ß to SS (for Python2)
         string1 = string1.replace('ß', 'SS')
@@ -100,16 +95,16 @@ class Editex(SequenceSimilarityMeasure):
                                      self.group_cost)
 
         if not self.local:
-            for i in xrange(1, len1 + 1):
+            for i in range(1, len1 + 1):
                 d_mat[i, 0] = d_mat[i - 1, 0] + editex_helper.d_cost(
                                                     string1[i - 1], string1[i])
 
-        for j in xrange(1, len2 + 1):
+        for j in range(1, len2 + 1):
             d_mat[0, j] = d_mat[0, j - 1] + editex_helper.d_cost(string2[j - 1],
                                                                  string2[j])
 
-        for i in xrange(1, len1 + 1):
-            for j in xrange(1, len2 + 1):
+        for i in range(1, len1 + 1):
+            for j in range(1, len2 + 1):
                 d_mat[i, j] = min(d_mat[i - 1, j] + editex_helper.d_cost(
                                                     string1[i - 1], string1[i]),
                                   d_mat[i, j - 1] + editex_helper.d_cost(
