@@ -97,8 +97,8 @@ if __name__ == "__main__":
         LONG_DESCRIPTION = f.read()
 
     setuptools.setup(
-        name='py_stringmatching',
-        version='0.4.3',
+        name='py-stringmatching',
+        version='0.4.4',
         description='Python library for string matching.',
         long_description=LONG_DESCRIPTION,
         url='https://sites.google.com/site/anhaidgroup/projects/magellan/py_stringmatching',
@@ -123,6 +123,7 @@ if __name__ == "__main__":
             'Programming Language :: Python :: 3.9',
             'Programming Language :: Python :: 3.10',
             'Programming Language :: Python :: 3.11',
+            'Programming Language :: Python :: 3.12',
             'Topic :: Scientific/Engineering',
             'Topic :: Utilities',
             'Topic :: Software Development :: Libraries',
@@ -130,7 +131,6 @@ if __name__ == "__main__":
         packages=packages,
         install_requires=[
             'numpy >= 1.7.0',
-            'six'
         ],
         setup_requires=[
             'numpy >= 1.7.0'                                                   

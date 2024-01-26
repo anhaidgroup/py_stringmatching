@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import unittest
 
 from py_stringmatching.tokenizer.alphabetic_tokenizer import AlphabeticTokenizer

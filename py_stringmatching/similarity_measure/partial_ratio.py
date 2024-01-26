@@ -1,7 +1,5 @@
 """Fuzzy Wuzzy Partial Ratio Similarity Measure"""
 
-from __future__ import division
-
 from difflib import SequenceMatcher
 from py_stringmatching import utils
 from py_stringmatching.similarity_measure.sequence_similarity_measure import \

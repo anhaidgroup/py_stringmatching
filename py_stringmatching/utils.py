@@ -1,7 +1,4 @@
-import functools
 import re
-import six
-import sys
 
 """
 This module defines a list of utility and validation functions.
@@ -26,9 +23,9 @@ def sim_check_for_same_len(*args):
 
 
 def sim_check_for_string_inputs(*args):
-    if not isinstance(args[0], six.string_types):
+    if not isinstance(args[0], str):
         raise TypeError('First argument is expected to be a string')
-    if not isinstance(args[1], six.string_types):
+    if not isinstance(args[1], str):
         raise TypeError('Second argument is expected to be a string')
 
 
@@ -58,7 +55,7 @@ def sim_check_for_zero_len(*args):
 
 def tok_check_for_string_input(*args):
     for i in range(len(args)):
-        if not isinstance(args[i], six.string_types):
+        if not isinstance(args[i], str):
             raise TypeError('Input is expected to be a string')
 
 

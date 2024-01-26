@@ -1,6 +1,5 @@
 """Bag distance measure"""
 
-from __future__ import division
 import collections
 
 from py_stringmatching import utils
