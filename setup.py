@@ -39,14 +39,17 @@ class build_ext(_build_ext):
         _build_ext.build_extensions(self)
 
 def generate_cython():
-    cwd = os.path.abspath(os.path.dirname(__file__))
-    print("Cythonizing sources")
-    p = subprocess.call([sys.executable, os.path.join(cwd,
-                                                      'build_tools',
-                                                      'cythonize.py'),
-                         'py_stringmatching'],
-                        cwd=cwd)
-    if p != 0:
+    module_list = ["py_stringmatching/similarity_measure/cython/cython_affine.pyx",
+                   "py_stringmatching/similarity_measure/cython/cython_jaro.pyx",
+                   "py_stringmatching/similarity_measure/cython/cython_jaro_winkler.pyx",
+                   "py_stringmatching/similarity_measure/cython/cython_levenshtein.pyx",
+                   "py_stringmatching/similarity_measure/cython/cython_needleman_wunsch.pyx",
+                   "py_stringmatching/similarity_measure/cython/cython_smith_waterman.pyx",
+                   "py_stringmatching/similarity_measure/cython/cython_utils.pyx"
+                   ]
+    p = cythonize(module_list)
+    
+    if !p:
         raise RuntimeError("Running cythonize failed!")
 
 
