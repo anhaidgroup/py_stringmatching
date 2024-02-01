@@ -39,6 +39,9 @@ class build_ext(_build_ext):
         _build_ext.build_extensions(self)
 
 def generate_cython():
+
+    from Cython.Build import cythonize
+    
     module_list = ["py_stringmatching/similarity_measure/cython/cython_affine.pyx",
                    "py_stringmatching/similarity_measure/cython/cython_jaro.pyx",
                    "py_stringmatching/similarity_measure/cython/cython_jaro_winkler.pyx",
