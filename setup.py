@@ -104,7 +104,7 @@ if __name__ == "__main__":
 
     setuptools.setup(
         name='py-stringmatching',
-        version='0.4.4',
+        version='0.4.5',
         description='Python library for string matching.',
         long_description=LONG_DESCRIPTION,
         url='https://sites.google.com/site/anhaidgroup/projects/magellan/py_stringmatching',
