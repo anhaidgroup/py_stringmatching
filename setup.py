@@ -49,7 +49,7 @@ def generate_cython():
                    ]
     p = cythonize(module_list)
     
-    if !p:
+    if not p:
         raise RuntimeError("Running cythonize failed!")
 
 
