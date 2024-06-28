@@ -2,13 +2,13 @@
 
 import cython
 import numpy as np
-cimport numpy as np
+cimport numpy as cnp
 from py_stringmatching.similarity_measure.cython.cython_utils import int_min_three
 from numpy import int32
 from numpy cimport int32_t
 
 DTYPE = int
-ctypedef np.int_t DTYPE_t
+ctypedef cnp.int_t DTYPE_t
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
