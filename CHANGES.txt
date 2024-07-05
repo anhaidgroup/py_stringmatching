@@ -1,3 +1,7 @@
+v0.4.6 - 7/5/2024
+  * Limited Numpy to <2.0 in setup.py, due to compatibility issues
+  * Added preliminary testing of pip install to Github Actions workflow
+
 v0.4.5 - 1/26/2024
   * Discontinued usage of cythonize.py during setup due to Python 3.12 compatibility issues
 
