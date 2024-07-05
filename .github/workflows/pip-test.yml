@@ -33,4 +33,4 @@ jobs:
       - name: Install package
         run: |
           python setup.py sdist
-          pip install dist/py-stringmatching-0.4.5.tar.gz
+          pip install dist/py-stringmatching-0.4.6.tar.gz
