@@ -136,10 +136,10 @@ if __name__ == "__main__":
         ],
         packages=packages,
         install_requires=[
-            'numpy >= 1.7.0,<2.0',
+            'numpy >= 1.7.0',
         ],
         setup_requires=[
-            'numpy >= 1.7.0,<2.0'                                                   
+            'numpy >= 1.7.0'                                                   
         ],
         ext_modules=extensions,
         cmdclass=cmdclass,
