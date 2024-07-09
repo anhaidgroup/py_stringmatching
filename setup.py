@@ -92,8 +92,8 @@ if __name__ == "__main__":
                                        include_dirs=[]),
                   setuptools.Extension("py_stringmatching.similarity_measure.cython.cython_affine",
                                        ["py_stringmatching/similarity_measure/cython/cython_affine.c"],
-                                       include_dirs=[])
-
+                                       include_dirs=[]),
+                  include_dirs=[numpy.get_include()]
                   ]
  
     # find packages to be included. exclude benchmarks.
