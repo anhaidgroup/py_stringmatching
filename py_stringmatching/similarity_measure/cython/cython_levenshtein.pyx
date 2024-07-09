@@ -8,7 +8,7 @@ from numpy import int32
 from numpy cimport int32_t
 
 DTYPE = int
-ctypedef cnp.int_t DTYPE_t
+ctypedef cnp.intp DTYPE_t
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
