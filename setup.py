@@ -1,6 +1,7 @@
 import subprocess
 import sys
 import os
+import numpy
 
 # check if pip is installed. If not, raise an ImportError
 PIP_INSTALLED = True
