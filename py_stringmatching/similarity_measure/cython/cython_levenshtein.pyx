@@ -7,6 +7,8 @@ from py_stringmatching.similarity_measure.cython.cython_utils import int_min_thr
 from numpy import int32
 from numpy cimport int32_t
 
+cnp.import_array()
+
 DTYPE = int
 ctypedef cnp.int DTYPE_t
 
