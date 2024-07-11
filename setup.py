@@ -21,10 +21,12 @@ def install_and_import(package):
     finally:
         globals()[package] = importlib.import_module(package)
 
-# check if setuptools and numpy are installed. If not, install setuptools and/or numpy
+# check if setuptools is installed. If not, install setuptools
 # automatically using pip.
 install_and_import('setuptools')
-install_and_import('numpy')
+
+# use setuptools to install numpy
+setuptools.dist.Distribution.fetch_build_eggs(['numpy>=1.7.0')
 
 from setuptools.command.build_ext import build_ext as _build_ext
 
