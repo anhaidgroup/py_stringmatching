@@ -30,15 +30,15 @@ from setuptools.command.build_ext import build_ext as _build_ext
 class build_ext(_build_ext):
     def build_extensions(self):
         import numpy
-        self.include_dirs.append(numpy.get_include())
         
-        import pkg_resources                                                            
-        numpy_incl = pkg_resources.resource_filename('numpy', 'core/include')
+        #import pkg_resources                                                            
+        #numpy_incl = pkg_resources.resource_filename('numpy', 'core/include')
 
         for ext in self.extensions:
-            if (hasattr(ext, 'include_dirs') and
-                    not numpy_incl in ext.include_dirs):
-                ext.include_dirs.append(numpy_incl)
+            #if (hasattr(ext, 'include_dirs') and
+                    #not numpy_incl in ext.include_dirs):
+                #ext.include_dirs.append(numpy_incl)
+            ext.include_dirs.append(numpy.get_include())
         _build_ext.build_extensions(self)
 
 def generate_cython():
@@ -76,25 +76,25 @@ if __name__ == "__main__":
     # specify extensions that need to be compiled
     extensions = [setuptools.Extension("py_stringmatching.similarity_measure.cython.cython_levenshtein",
                                        ["py_stringmatching/similarity_measure/cython/cython_levenshtein.c"],
-                                       include_dirs=[numpy.get_include()]),
+                                       include_dirs=[]),
                   setuptools.Extension("py_stringmatching.similarity_measure.cython.cython_jaro",
                                        ["py_stringmatching/similarity_measure/cython/cython_jaro.c"],
-                                       include_dirs=[numpy.get_include()]),
+                                       include_dirs=[]),
                   setuptools.Extension("py_stringmatching.similarity_measure.cython.cython_jaro_winkler",
                                        ["py_stringmatching/similarity_measure/cython/cython_jaro_winkler.c"],
-                                       include_dirs=[numpy.get_include()]),
+                                       include_dirs=[]),
                   setuptools.Extension("py_stringmatching.similarity_measure.cython.cython_utils",
                                        ["py_stringmatching/similarity_measure/cython/cython_utils.c"],
-                                       include_dirs=[numpy.get_include()]),
+                                       include_dirs=[]),
                   setuptools.Extension("py_stringmatching.similarity_measure.cython.cython_needleman_wunsch",
                                        ["py_stringmatching/similarity_measure/cython/cython_needleman_wunsch.c"],
-                                       include_dirs=[numpy.get_include()]),
+                                       include_dirs=[]),
                   setuptools.Extension("py_stringmatching.similarity_measure.cython.cython_smith_waterman",
                                        ["py_stringmatching/similarity_measure/cython/cython_smith_waterman.c"],
-                                       include_dirs=[numpy.get_include()]),
+                                       include_dirs=[]),
                   setuptools.Extension("py_stringmatching.similarity_measure.cython.cython_affine",
                                        ["py_stringmatching/similarity_measure/cython/cython_affine.c"],
-                                       include_dirs=[numpy.get_include()])
+                                       include_dirs=[])
                   ]
  
     # find packages to be included. exclude benchmarks.
