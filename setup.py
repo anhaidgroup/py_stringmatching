@@ -25,8 +25,9 @@ def install_and_import(package):
 # automatically using pip.
 install_and_import('setuptools')
 
-# use setuptools to install numpy
+# use setuptools to install numpy, then import
 setuptools.dist.Distribution().fetch_build_eggs(['numpy>=1.7.0'])
+import numpy
 
 from setuptools.command.build_ext import build_ext as _build_ext
 
