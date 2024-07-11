@@ -1,7 +1,6 @@
 import subprocess
 import sys
 import os
-import numpy
 
 # check if pip is installed. If not, raise an ImportError
 PIP_INSTALLED = True
@@ -22,9 +21,10 @@ def install_and_import(package):
     finally:
         globals()[package] = importlib.import_module(package)
 
-# check if setuptools is installed. If not, install setuptools
+# check if setuptools and numpy are installed. If not, install setuptools and/or numpy
 # automatically using pip.
 install_and_import('setuptools')
+install_and_import('numpy')
 
 from setuptools.command.build_ext import build_ext as _build_ext
 
