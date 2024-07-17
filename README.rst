@@ -20,7 +20,7 @@ Dependencies
 
 py_stringmatching has been tested on each Python version between 3.7 and 3.12, inclusive.
 
-The required dependencies to build the package are NumPy 1.7.0 or higher
+The required dependencies to build the package are NumPy 1.7.0 or higher, but lower than 2.0,
 and a C or C++ compiler. For the development version, you will also need Cython.
 
 Platforms
