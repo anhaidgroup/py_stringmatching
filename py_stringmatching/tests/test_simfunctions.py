@@ -298,6 +298,15 @@ class EditexTestCases(unittest.TestCase):
         self.assertEqual(self.ed.get_raw_score('', 'MARTHA'), 12)
         self.assertEqual(self.ed.get_raw_score('MARTHA', ''), 12)
 
+    def test_editex_overlapping_groups(self):
+        # Editex letter groups overlap (Zobel & Dart 1996): B and P share the
+        # {B,P} group, while C and Q share the {C,K,Q} group. A flat
+        # char->group mapping cannot represent chars that belong to more than
+        # one group, so these pairs must cost group_cost (1), not mismatch (2).
+        self.assertEqual(self.ed.get_raw_score('BATTLE', 'PATTLE'), 1)
+        self.assertEqual(self.ed.get_raw_score('CAT', 'QAT'), 1)
+        self.assertEqual(self.ed.get_raw_score('MUSIC', 'MUSIQ'), 1)
+
     def test_valid_input_sim_score(self):
         self.assertEqual(self.ed.get_sim_score('MARTHA', 'MARTHA'), 1.0)
         self.assertEqual(self.ed.get_sim_score('MARTHA', 'MARHTA'), 1.0 - (3.0/12.0))

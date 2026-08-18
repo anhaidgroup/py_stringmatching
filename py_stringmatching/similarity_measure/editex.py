@@ -227,18 +227,25 @@ class Editex(SequenceSimilarityMeasure):
 
 
 class EditexHelper:
-    letter_groups = dict()
-    letter_groups['A'] = letter_groups['E'] = letter_groups['I'] = letter_groups['O'] \
-        = letter_groups['U'] = letter_groups['Y'] = 0
-    letter_groups['B'] = letter_groups['P'] = 1
-    letter_groups['C'] = letter_groups['K'] = letter_groups['Q'] = 2
-    letter_groups['D'] = letter_groups['T'] = 3
-    letter_groups['L'] = letter_groups['R'] = 4
-    letter_groups['M'] = letter_groups['N'] = 5
-    letter_groups['G'] = letter_groups['J'] = 6
-    letter_groups['F'] = letter_groups['P'] = letter_groups['V'] = 7
-    letter_groups['S'] = letter_groups['X'] = letter_groups['Z'] = 8
-    letter_groups['C'] = letter_groups['S'] = letter_groups['J'] = 9
+    # Canonical Editex letter groups from Zobel & Dart (1996), matching the
+    # abydos reference implementation cited above. The groups intentionally
+    # OVERLAP: C belongs to both {C,K,Q} and {C,S,Z}; P to both {B,P} and
+    # {F,P,V}; S and Z to both {S,X,Z} and {C,S,Z}. A flat char->group dict
+    # cannot represent a char in multiple groups (later writes clobber earlier
+    # keys), so the groups are stored as a tuple of frozensets and r_cost tests
+    # whether the two chars share ANY group.
+    letter_groups = (
+        frozenset('AEIOUY'),
+        frozenset('BP'),
+        frozenset('CKQ'),
+        frozenset('DT'),
+        frozenset('LR'),
+        frozenset('MN'),
+        frozenset('GJ'),
+        frozenset('FPV'),
+        frozenset('SXZ'),
+        frozenset('CSZ'),
+    )
     all_letters = frozenset('AEIOUYBPCKQDTLRMNGJFVSXZ')
 
     def __init__(self, match_cost, mismatch_cost, group_cost):
@@ -252,9 +259,9 @@ class EditexHelper:
         if ch1 == ch2:
             return self.match_cost
         if ch1 in EditexHelper.all_letters and ch2 in EditexHelper.all_letters:
-            if (EditexHelper.letter_groups[ch1] ==
-                EditexHelper.letter_groups[ch2]):
-                return self.group_cost
+            for group in EditexHelper.letter_groups:
+                if ch1 in group and ch2 in group:
+                    return self.group_cost
         return self.mismatch_cost
 
     def d_cost(self, ch1, ch2):
